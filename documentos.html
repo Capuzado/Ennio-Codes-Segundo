@@ -78,7 +78,6 @@
             padding: 20px;
             gap: 30px;
             position: relative;
-            transition: all 0.3s ease;
         }
 
         .sidebar-esquerda {
@@ -154,31 +153,6 @@
             margin-bottom: 24px;
         }
 
-        /* ── FILTRO ── */
-        .categorias {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 24px;
-        }
-
-        .categoria-btn {
-            padding: 7px 18px;
-            border: 2px solid #2a5298;
-            border-radius: 20px;
-            background: white;
-            color: #2a5298;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            font-family: Arial, sans-serif;
-        }
-
-        .categoria-btn:hover, .categoria-btn.ativo {
-            background: #2a5298;
-            color: white;
-        }
-
         /* ── BUSCA ── */
         .busca-wrapper {
             position: relative;
@@ -207,18 +181,92 @@
             pointer-events: none;
         }
 
-        /* ── LISTA DE DOCUMENTOS ── */
+        /* ── ABAS DE BIMESTRE ── */
+        .bimestres-abas {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+            border-bottom: 3px solid #e0e6f0;
+            padding-bottom: 0;
+        }
+
+        .bimestre-aba {
+            padding: 10px 22px;
+            border: none;
+            border-radius: 8px 8px 0 0;
+            background: #f0f2f5;
+            color: #555;
+            font-size: 0.95rem;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -3px;
+            transition: all 0.2s ease;
+        }
+
+        .bimestre-aba:hover { background: #dde8ff; color: #1e3c72; }
+
+        .bimestre-aba.ativo {
+            background: white;
+            color: #1e3c72;
+            border-bottom: 3px solid #2a5298;
+        }
+
+        /* ── FILTROS DE MATÉRIA ── */
+        .materias-filtros {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .materia-btn {
+            padding: 6px 16px;
+            border: 2px solid transparent;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+            transition: all 0.2s ease;
+            color: white;
+            opacity: 0.55;
+        }
+
+        .materia-btn.ativo { opacity: 1; transform: scale(1.06); }
+        .materia-btn:hover  { opacity: 0.85; }
+
+        /* ── SEÇÃO DE MATÉRIA ── */
+        .materia-secao {
+            margin-bottom: 28px;
+        }
+
+        .materia-titulo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.05rem;
+            font-weight: bold;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        /* ── CARDS DE DOCUMENTO ── */
         .doc-lista {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
         }
 
         .doc-card {
             display: flex;
             align-items: center;
-            gap: 16px;
-            padding: 16px 18px;
+            gap: 14px;
+            padding: 14px 16px;
             background: #f5f7fb;
             border-radius: 10px;
             border: 2px solid transparent;
@@ -234,9 +282,9 @@
         }
 
         .doc-icone {
-            font-size: 2rem;
+            font-size: 1.8rem;
             flex-shrink: 0;
-            width: 48px;
+            width: 44px;
             text-align: center;
         }
 
@@ -245,36 +293,26 @@
         .doc-nome {
             font-weight: bold;
             color: #1e3c72;
-            font-size: 1rem;
+            font-size: 0.95rem;
             margin-bottom: 3px;
         }
 
         .doc-descricao {
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             color: #666;
             margin-bottom: 4px;
         }
 
         .doc-meta {
             display: flex;
-            gap: 14px;
-            font-size: 0.75rem;
+            gap: 12px;
+            font-size: 0.73rem;
             color: #999;
-        }
-
-        .doc-tag {
-            display: inline-block;
-            padding: 2px 8px;
-            background: #dde8ff;
-            color: #2a5298;
-            border-radius: 10px;
-            font-size: 0.72rem;
-            font-weight: bold;
+            flex-wrap: wrap;
         }
 
         .doc-acoes {
             display: flex;
-            flex-direction: column;
             gap: 7px;
             flex-shrink: 0;
         }
@@ -289,21 +327,19 @@
             text-align: center;
             transition: all 0.2s ease;
             font-family: Arial, sans-serif;
-            display: block;
+            white-space: nowrap;
         }
 
-        .btn-ver      { background: #2a5298; color: white; }
-        .btn-ver:hover { background: #1e3c72; }
-        .btn-baixar      { background: #e8f0fe; color: #2a5298; border: 1px solid #2a5298; }
-        .btn-baixar:hover { background: #d0e1ff; }
+        .btn-ver       { background: #2a5298; color: white; }
+        .btn-ver:hover  { background: #1e3c72; }
+        .btn-baixar       { background: #e8f0fe; color: #2a5298; border: 1px solid #2a5298; }
+        .btn-baixar:hover  { background: #d0e1ff; }
 
-        /* Mensagem vazio */
         .vazio {
             text-align: center;
-            color: #999;
+            color: #aaa;
             padding: 40px;
             font-size: 1rem;
-            display: none;
         }
 
         footer {
@@ -320,8 +356,9 @@
             .sidebar-esquerda.fechada { transform: translateX(-100%); position: absolute; }
             .sidebar-toggle, .reopen-sidebar { top: 120px; left: 15px; width: 40px; height: 40px; font-size: 20px; }
             .doc-card { flex-wrap: wrap; }
-            .doc-acoes { flex-direction: row; width: 100%; }
+            .doc-acoes { width: 100%; }
             .btn-doc { flex: 1; }
+            .bimestre-aba { padding: 8px 14px; font-size: 0.85rem; }
         }
 
         @media (max-width: 480px) {
@@ -360,18 +397,14 @@
             <div class="painel">
                 <h2>📄 Documentos Pedagógicos</h2>
 
-                <!-- Busca -->
                 <div class="busca-wrapper">
                     <span class="busca-icone">🔍</span>
-                    <input type="text" class="busca-input" id="buscaInput" placeholder="Buscar documento...">
+                    <input type="text" class="busca-input" id="buscaInput" placeholder="Buscar por nome ou matéria...">
                 </div>
 
-                <!-- Filtros -->
-                <div class="categorias" id="categorias"></div>
-
-                <!-- Lista -->
-                <div class="doc-lista" id="docLista"></div>
-                <div class="vazio" id="vazio">Nenhum documento encontrado.</div>
+                <div class="bimestres-abas" id="bimestresAbas"></div>
+                <div class="materias-filtros" id="materiasFiltros"></div>
+                <div id="conteudoDocs"></div>
             </div>
         </main>
     </div>
@@ -381,160 +414,318 @@
     </footer>
 
     <script>
-        // =====================================================
-        //  ADICIONE SEUS DOCUMENTOS AQUI
+        // ============================================================
+        //  MATÉRIAS — defina nome, cor de fundo e emoji
+        //  A cor vale para o botão de filtro e o cabeçalho da seção
+        // ============================================================
+        const materias = [
+            { id: "matematica",  nome: "Matemática",          cor: "#c0392b", emoji: "🔢" },
+            { id: "portugues",   nome: "Português",            cor: "#2980b9", emoji: "📝" },
+            { id: "historia",    nome: "História",             cor: "#8e44ad", emoji: "📜" },
+            { id: "geografia",   nome: "Geografia",            cor: "#27ae60", emoji: "🌍" },
+            { id: "ciencias",    nome: "Ciências",             cor: "#16a085", emoji: "🔬" },
+            { id: "ingles",      nome: "Inglês",               cor: "#d35400", emoji: "🌐" },
+            { id: "artes",       nome: "Artes",                cor: "#e91e8c", emoji: "🎨" },
+            { id: "ef",          nome: "Ed. Física",           cor: "#e67e22", emoji: "⚽" },
+        ];
+
+        // ============================================================
+        //  DOCUMENTOS — organizados por bimestre e matéria
         //
-        //  nome      -> nome exibido do documento
-        //  descricao -> breve descrição
-        //  categoria -> grupo (vira botão de filtro automaticamente)
-        //  tipo      -> "PDF", "DOC", "PPT", "XLS" — muda o ícone
+        //  bimestre  -> "1", "2", "3" ou "4"
+        //  materia   -> deve bater com o "id" de uma matéria acima
+        //  nome      -> título do documento
+        //  descricao -> breve descrição (pode deixar "")
         //  data      -> data de publicação (texto livre)
-        //  tamanho   -> tamanho do arquivo (texto livre)
-        //  linkVer   -> URL para abrir/visualizar (Google Drive, etc.)
-        //              deixe "" se não quiser o botão Ver
-        //  linkBaixar-> URL para download direto
-        //              deixe "" se não quiser o botão Baixar
-        // =====================================================
+        //  tamanho   -> ex: "1,2 MB" (pode deixar "")
+        //  linkVer   -> URL do Google Drive para visualizar
+        //               deixe "" para esconder o botão
+        //  linkBaixar-> URL de download direto
+        //               deixe "" para esconder o botão
+        // ============================================================
         const documentos = [
+            // ── 1º BIMESTRE ─────────────────────────────────────────
             {
-                nome: "Projeto Político Pedagógico 2024",
-                descricao: "PPP da escola com diretrizes e metas para o ano letivo.",
-                categoria: "Institucional",
-                tipo: "PDF",
-                data: "Jan/2024",
-                tamanho: "2,4 MB",
+                bimestre: "1", materia: "matematica",
+                nome: "Números e Operações",
+                descricao: "Adição, subtração, multiplicação e divisão com inteiros.",
+                data: "Fev/2024", tamanho: "800 KB",
                 linkVer: "https://drive.google.com/file/d/SEU_ID/view",
                 linkBaixar: "https://drive.google.com/uc?export=download&id=SEU_ID"
             },
             {
-                nome: "Regimento Escolar",
-                descricao: "Normas e regras que regem o funcionamento da escola.",
-                categoria: "Institucional",
-                tipo: "PDF",
-                data: "Mar/2023",
-                tamanho: "1,1 MB",
+                bimestre: "1", materia: "portugues",
+                nome: "Interpretação de Texto",
+                descricao: "Estratégias de leitura e compreensão textual.",
+                data: "Fev/2024", tamanho: "600 KB",
                 linkVer: "https://drive.google.com/file/d/SEU_ID/view",
                 linkBaixar: ""
             },
             {
-                nome: "Plano de Aula — Matemática 1º Ano",
-                descricao: "Sequência didática do 1º bimestre de Matemática.",
-                categoria: "Planos de Aula",
-                tipo: "DOC",
-                data: "Fev/2024",
-                tamanho: "340 KB",
-                linkVer: "",
-                linkBaixar: "https://drive.google.com/uc?export=download&id=SEU_ID"
-            },
-            {
-                nome: "Plano de Aula — Português 2º Ano",
-                descricao: "Atividades de leitura e interpretação de texto.",
-                categoria: "Planos de Aula",
-                tipo: "DOC",
-                data: "Fev/2024",
-                tamanho: "280 KB",
-                linkVer: "",
-                linkBaixar: "https://drive.google.com/uc?export=download&id=SEU_ID"
-            },
-            {
-                nome: "Comunicado — Reunião de Pais Maio",
-                descricao: "Informações sobre a reunião bimestral de pais e mestres.",
-                categoria: "Comunicados",
-                tipo: "PDF",
-                data: "Mai/2024",
-                tamanho: "180 KB",
+                bimestre: "1", materia: "historia",
+                nome: "Pré-História e Antiguidade",
+                descricao: "Da origem do homem às primeiras civilizações.",
+                data: "Mar/2024", tamanho: "1,1 MB",
                 linkVer: "https://drive.google.com/file/d/SEU_ID/view",
                 linkBaixar: "https://drive.google.com/uc?export=download&id=SEU_ID"
             },
             {
-                nome: "Calendário Escolar 2024",
-                descricao: "Datas de provas, feriados e eventos do ano letivo.",
-                categoria: "Comunicados",
-                tipo: "PDF",
-                data: "Jan/2024",
-                tamanho: "95 KB",
+                bimestre: "1", materia: "ciencias",
+                nome: "Seres Vivos e Células",
+                descricao: "Classificação dos seres vivos e estrutura celular.",
+                data: "Mar/2024", tamanho: "950 KB",
+                linkVer: "https://drive.google.com/file/d/SEU_ID/view",
+                linkBaixar: "https://drive.google.com/uc?export=download&id=SEU_ID"
+            },
+
+            // ── 2º BIMESTRE ─────────────────────────────────────────
+            {
+                bimestre: "2", materia: "matematica",
+                nome: "Frações e Porcentagem",
+                descricao: "Operações com frações, decimais e porcentagem.",
+                data: "Mai/2024", tamanho: "720 KB",
+                linkVer: "https://drive.google.com/file/d/SEU_ID/view",
+                linkBaixar: "https://drive.google.com/uc?export=download&id=SEU_ID"
+            },
+            {
+                bimestre: "2", materia: "portugues",
+                nome: "Produção Textual",
+                descricao: "Gêneros textuais: narração, descrição e dissertação.",
+                data: "Mai/2024", tamanho: "540 KB",
+                linkVer: "https://drive.google.com/file/d/SEU_ID/view",
+                linkBaixar: ""
+            },
+            {
+                bimestre: "2", materia: "geografia",
+                nome: "Relevo e Hidrografia do Brasil",
+                descricao: "Principais formas de relevo e bacias hidrográficas.",
+                data: "Jun/2024", tamanho: "1,3 MB",
+                linkVer: "https://drive.google.com/file/d/SEU_ID/view",
+                linkBaixar: "https://drive.google.com/uc?export=download&id=SEU_ID"
+            },
+            {
+                bimestre: "2", materia: "ingles",
+                nome: "Simple Present & Vocabulary",
+                descricao: "Conjugação no presente simples e vocabulário cotidiano.",
+                data: "Jun/2024", tamanho: "410 KB",
+                linkVer: "https://drive.google.com/file/d/SEU_ID/view",
+                linkBaixar: "https://drive.google.com/uc?export=download&id=SEU_ID"
+            },
+
+            // ── 3º BIMESTRE ─────────────────────────────────────────
+            {
+                bimestre: "3", materia: "matematica",
+                nome: "Geometria Plana",
+                descricao: "Áreas e perímetros de figuras planas.",
+                data: "Ago/2024", tamanho: "870 KB",
+                linkVer: "https://drive.google.com/file/d/SEU_ID/view",
+                linkBaixar: "https://drive.google.com/uc?export=download&id=SEU_ID"
+            },
+            {
+                bimestre: "3", materia: "ciencias",
+                nome: "Sistema Solar e Astronomia",
+                descricao: "Planetas, satélites e fenômenos astronômicos.",
+                data: "Ago/2024", tamanho: "1,5 MB",
+                linkVer: "https://drive.google.com/file/d/SEU_ID/view",
+                linkBaixar: "https://drive.google.com/uc?export=download&id=SEU_ID"
+            },
+            {
+                bimestre: "3", materia: "artes",
+                nome: "Arte Moderna Brasileira",
+                descricao: "Semana de 22 e os principais artistas modernistas.",
+                data: "Set/2024", tamanho: "2,1 MB",
+                linkVer: "https://drive.google.com/file/d/SEU_ID/view",
+                linkBaixar: ""
+            },
+
+            // ── 4º BIMESTRE ─────────────────────────────────────────
+            {
+                bimestre: "4", materia: "matematica",
+                nome: "Estatística e Probabilidade",
+                descricao: "Média, moda, mediana e cálculo de probabilidades.",
+                data: "Nov/2024", tamanho: "660 KB",
+                linkVer: "https://drive.google.com/file/d/SEU_ID/view",
+                linkBaixar: "https://drive.google.com/uc?export=download&id=SEU_ID"
+            },
+            {
+                bimestre: "4", materia: "portugues",
+                nome: "Literatura Brasileira",
+                descricao: "Principais obras e autores da literatura nacional.",
+                data: "Nov/2024", tamanho: "780 KB",
+                linkVer: "https://drive.google.com/file/d/SEU_ID/view",
+                linkBaixar: "https://drive.google.com/uc?export=download&id=SEU_ID"
+            },
+            {
+                bimestre: "4", materia: "ef",
+                nome: "Esportes Coletivos — Regras",
+                descricao: "Regras oficiais de vôlei, basquete e futsal.",
+                data: "Nov/2024", tamanho: "390 KB",
                 linkVer: "https://drive.google.com/file/d/SEU_ID/view",
                 linkBaixar: "https://drive.google.com/uc?export=download&id=SEU_ID"
             },
         ];
-        // =====================================================
+        // ============================================================
 
-        const icones = { PDF: "📕", DOC: "📘", PPT: "📙", XLS: "📗" };
+        const bimestresConfig = [
+            { id: "1", label: "1º Bimestre" },
+            { id: "2", label: "2º Bimestre" },
+            { id: "3", label: "3º Bimestre" },
+            { id: "4", label: "4º Bimestre" },
+        ];
 
-        let categoriaAtiva = "Todas";
+        let bimestreAtivo  = "1";
+        let materiasAtivas = new Set(["todas"]);  // "todas" = sem filtro
         let termoBusca     = "";
 
-        function obterCategorias() {
-            return ["Todas", ...new Set(documentos.map(d => d.categoria))];
+        // ── Mapa rápido de matérias por id ──
+        const materiaMap = {};
+        materias.forEach(m => { materiaMap[m.id] = m; });
+
+        // ── Quais matérias existem no bimestre atual ──
+        function materiasNoBimestre(bim) {
+            const ids = [...new Set(
+                documentos
+                    .filter(d => d.bimestre === bim)
+                    .map(d => d.materia)
+            )];
+            return materias.filter(m => ids.includes(m.id));
         }
 
-        function renderizarCategorias() {
-            const div = document.getElementById('categorias');
+        // ── Renderizar abas de bimestre ──
+        function renderizarAbas() {
+            const div = document.getElementById('bimestresAbas');
             div.innerHTML = '';
-            obterCategorias().forEach(cat => {
+            bimestresConfig.forEach(b => {
                 const btn = document.createElement('button');
-                btn.className   = 'categoria-btn' + (cat === categoriaAtiva ? ' ativo' : '');
-                btn.textContent = cat;
-                btn.onclick = () => { categoriaAtiva = cat; renderizarCategorias(); renderizarDocs(); };
+                btn.className   = 'bimestre-aba' + (b.id === bimestreAtivo ? ' ativo' : '');
+                btn.textContent = b.label;
+                btn.onclick = () => {
+                    bimestreAtivo = b.id;
+                    materiasAtivas = new Set(["todas"]);
+                    renderizarAbas();
+                    renderizarFiltrosMaterias();
+                    renderizarDocs();
+                };
                 div.appendChild(btn);
             });
         }
 
-        function renderizarDocs() {
-            const lista  = document.getElementById('docLista');
-            const vazio  = document.getElementById('vazio');
-            const termo  = termoBusca.toLowerCase();
+        // ── Renderizar botões de filtro de matéria ──
+        function renderizarFiltrosMaterias() {
+            const div  = document.getElementById('materiasFiltros');
+            const lista = materiasNoBimestre(bimestreAtivo);
+            div.innerHTML = '';
 
-            const filtrados = documentos.filter(d => {
-                const catOk  = categoriaAtiva === "Todas" || d.categoria === categoriaAtiva;
-                const busOk  = !termo
-                    || d.nome.toLowerCase().includes(termo)
-                    || d.descricao.toLowerCase().includes(termo)
-                    || d.categoria.toLowerCase().includes(termo);
-                return catOk && busOk;
-            });
+            if (lista.length === 0) return;
 
-            lista.innerHTML = '';
+            // Botão "Todas"
+            const todBtn = document.createElement('button');
+            todBtn.className = 'materia-btn' + (materiasAtivas.has("todas") ? ' ativo' : '');
+            todBtn.textContent = 'Todas';
+            todBtn.style.background = '#2a5298';
+            todBtn.onclick = () => {
+                materiasAtivas = new Set(["todas"]);
+                renderizarFiltrosMaterias();
+                renderizarDocs();
+            };
+            div.appendChild(todBtn);
 
-            if (filtrados.length === 0) {
-                vazio.style.display = 'block';
-                return;
-            }
-            vazio.style.display = 'none';
-
-            filtrados.forEach(doc => {
-                const card = document.createElement('div');
-                card.className = 'doc-card';
-
-                const botoesHTML = `
-                    ${doc.linkVer    ? `<a href="${doc.linkVer}"    target="_blank" class="btn-doc btn-ver"   >👁️ Ver</a>`    : ''}
-                    ${doc.linkBaixar ? `<a href="${doc.linkBaixar}" target="_blank" class="btn-doc btn-baixar">⬇️ Baixar</a>` : ''}
-                `;
-
-                card.innerHTML = `
-                    <div class="doc-icone">${icones[doc.tipo] || '📄'}</div>
-                    <div class="doc-info">
-                        <div class="doc-nome">${doc.nome}</div>
-                        <div class="doc-descricao">${doc.descricao}</div>
-                        <div class="doc-meta">
-                            <span class="doc-tag">${doc.tipo}</span>
-                            <span>📅 ${doc.data}</span>
-                            ${doc.tamanho ? `<span>💾 ${doc.tamanho}</span>` : ''}
-                        </div>
-                    </div>
-                    <div class="doc-acoes">${botoesHTML}</div>
-                `;
-
-                lista.appendChild(card);
+            lista.forEach(m => {
+                const btn = document.createElement('button');
+                btn.className = 'materia-btn' + (!materiasAtivas.has("todas") && materiasAtivas.has(m.id) ? ' ativo' : '');
+                btn.textContent = m.emoji + ' ' + m.nome;
+                btn.style.background = m.cor;
+                btn.onclick = () => {
+                    materiasAtivas.delete("todas");
+                    if (materiasAtivas.has(m.id)) {
+                        materiasAtivas.delete(m.id);
+                        if (materiasAtivas.size === 0) materiasAtivas.add("todas");
+                    } else {
+                        materiasAtivas.add(m.id);
+                    }
+                    renderizarFiltrosMaterias();
+                    renderizarDocs();
+                };
+                div.appendChild(btn);
             });
         }
 
+        // ── Renderizar lista de documentos agrupados por matéria ──
+        function renderizarDocs() {
+            const container = document.getElementById('conteudoDocs');
+            const termo = termoBusca.toLowerCase();
+
+            // Matérias visíveis neste bimestre
+            const materiasVisiveis = materiasNoBimestre(bimestreAtivo)
+                .filter(m => materiasAtivas.has("todas") || materiasAtivas.has(m.id));
+
+            container.innerHTML = '';
+            let totalDocs = 0;
+
+            materiasVisiveis.forEach(mat => {
+                const docs = documentos.filter(d =>
+                    d.bimestre === bimestreAtivo &&
+                    d.materia  === mat.id &&
+                    (!termo || d.nome.toLowerCase().includes(termo) || d.descricao.toLowerCase().includes(termo))
+                );
+
+                if (docs.length === 0) return;
+                totalDocs += docs.length;
+
+                // Cabeçalho da matéria
+                const secao = document.createElement('div');
+                secao.className = 'materia-secao';
+
+                const titulo = document.createElement('div');
+                titulo.className = 'materia-titulo';
+                titulo.style.background = mat.cor;
+                titulo.innerHTML = `<span>${mat.emoji}</span><span>${mat.nome}</span>`;
+                secao.appendChild(titulo);
+
+                // Cards dos docs
+                const lista = document.createElement('div');
+                lista.className = 'doc-lista';
+
+                docs.forEach(doc => {
+                    const card = document.createElement('div');
+                    card.className = 'doc-card';
+
+                    const botoesHTML = [
+                        doc.linkVer    ? `<a href="${doc.linkVer}"    target="_blank" class="btn-doc btn-ver"   >👁️ Ver</a>`    : '',
+                        doc.linkBaixar ? `<a href="${doc.linkBaixar}" target="_blank" class="btn-doc btn-baixar">⬇️ Baixar</a>` : ''
+                    ].join('');
+
+                    card.innerHTML = `
+                        <div class="doc-icone">📕</div>
+                        <div class="doc-info">
+                            <div class="doc-nome">${doc.nome}</div>
+                            ${doc.descricao ? `<div class="doc-descricao">${doc.descricao}</div>` : ''}
+                            <div class="doc-meta">
+                                <span>📅 ${doc.data}</span>
+                                ${doc.tamanho ? `<span>💾 ${doc.tamanho}</span>` : ''}
+                            </div>
+                        </div>
+                        <div class="doc-acoes">${botoesHTML}</div>
+                    `;
+                    lista.appendChild(card);
+                });
+
+                secao.appendChild(lista);
+                container.appendChild(secao);
+            });
+
+            if (totalDocs === 0) {
+                container.innerHTML = '<div class="vazio">Nenhum documento encontrado para esta seleção.</div>';
+            }
+        }
+
+        // ── Busca ──
         document.getElementById('buscaInput').addEventListener('input', function () {
             termoBusca = this.value;
             renderizarDocs();
         });
 
-        // Sidebar
+        // ── Sidebar ──
         const sidebar   = document.getElementById('sidebar');
         const toggleBtn = document.getElementById('sidebarToggle');
         const reopenBtn = document.getElementById('reopenSidebar');
@@ -565,7 +756,9 @@
             if (reopenBtn) reopenBtn.style.top  = Math.max(170 - s, 20) + 'px';
         });
 
-        renderizarCategorias();
+        // ── Inicializar ──
+        renderizarAbas();
+        renderizarFiltrosMaterias();
         renderizarDocs();
     </script>
 </body>
