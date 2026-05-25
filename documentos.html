@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ennio Chiesa - Documentos Pedagógicos</title>
+    <link rel="shortcut icon" href="image/LogoEnnio.png" type="image/x-icon">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            overflow-x: hidden;
+        }
+
+        header {
+            position: relative;
+            background: url(image/escolafrontal.jpg) center/cover;
+            color: white;
+            padding: 1rem;
+            display: flex;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg,
+                rgb(56,0,0) 0%,
+                rgba(51,0,0,0.8) 30%,
+                rgba(133,19,19,0.466) 70%);
+            pointer-events: none;
+        }
+
+        header > * { position: relative; z-index: 1; }
+
+        .logo {
+            width: 130px; height: 130px;
+            object-fit: contain;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .logo:hover { transform: scale(1.05); }
+        .Title { font-size: 28px; }
+
+        .sidebar-toggle, .reopen-sidebar {
+            position: fixed;
+            left: 20px; top: 170px;
+            z-index: 1000;
+            background: #2a5298;
+            color: white;
+            border: none;
+            width: 45px; height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .sidebar-toggle:hover, .reopen-sidebar:hover {
+            background: #1e3c72;
+            transform: scale(1.1);
+        }
+        .reopen-sidebar { display: none; }
+        .reopen-sidebar.visible { display: flex; }
+
+        .main-layout {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            gap: 30px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-esquerda {
+            width: 280px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 20px;
+            align-self: flex-start;
+            height: fit-content;
+            background: white;
+            border-radius: 10px;
+            padding: 20px 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            margin-left: -10px;
+        }
+
+        .sidebar-esquerda.fechada {
+            transform: translateX(-120%);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .sidebar-esquerda h3 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #2a5298;
+            font-size: 1.2rem;
+        }
+
+        .sidebar-esquerda nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar-esquerda a {
+            color: #333;
+            text-decoration: none;
+            padding: 10px 12px;
+            background: #f5f5f5;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-esquerda a:hover {
+            background: #2a5298;
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .conteudo-central { flex: 1; min-width: 0; }
+
+        /* ── PAINEL ── */
+        .painel {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+        }
+
+        .painel h2 {
+            color: #1e3c72;
+            text-align: center;
+            font-size: 2rem;
+            border-bottom: 3px solid #2a5298;
+            padding-bottom: 10px;
+            margin-bottom: 24px;
+        }
+
+        /* ── FILTRO ── */
+        .categorias {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .categoria-btn {
+            padding: 7px 18px;
+            border: 2px solid #2a5298;
+            border-radius: 20px;
+            background: white;
+            color: #2a5298;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-family: Arial, sans-serif;
+        }
+
+        .categoria-btn:hover, .categoria-btn.ativo {
+            background: #2a5298;
+            color: white;
+        }
+
+        /* ── BUSCA ── */
+        .busca-wrapper {
+            position: relative;
+            margin-bottom: 22px;
+        }
+
+        .busca-input {
+            width: 100%;
+            padding: 11px 16px 11px 42px;
+            border: 2px solid #dde;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: Arial, sans-serif;
+            transition: border-color 0.2s;
+            outline: none;
+        }
+
+        .busca-input:focus { border-color: #2a5298; }
+
+        .busca-icone {
+            position: absolute;
+            left: 14px; top: 50%;
+            transform: translateY(-50%);
+            font-size: 1rem;
+            color: #999;
+            pointer-events: none;
+        }
+
+        /* ── LISTA DE DOCUMENTOS ── */
+        .doc-lista {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .doc-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 18px;
+            background: #f5f7fb;
+            border-radius: 10px;
+            border: 2px solid transparent;
+            transition: all 0.25s ease;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+        }
+
+        .doc-card:hover {
+            border-color: #2a5298;
+            background: #eef2fb;
+            transform: translateX(4px);
+            box-shadow: 0 4px 14px rgba(42,82,152,0.13);
+        }
+
+        .doc-icone {
+            font-size: 2rem;
+            flex-shrink: 0;
+            width: 48px;
+            text-align: center;
+        }
+
+        .doc-info { flex: 1; min-width: 0; }
+
+        .doc-nome {
+            font-weight: bold;
+            color: #1e3c72;
+            font-size: 1rem;
+            margin-bottom: 3px;
+        }
+
+        .doc-descricao {
+            font-size: 0.82rem;
+            color: #666;
+            margin-bottom: 4px;
+        }
+
+        .doc-meta {
+            display: flex;
+            gap: 14px;
+            font-size: 0.75rem;
+            color: #999;
+        }
+
+        .doc-tag {
+            display: inline-block;
+            padding: 2px 8px;
+            background: #dde8ff;
+            color: #2a5298;
+            border-radius: 10px;
+            font-size: 0.72rem;
+            font-weight: bold;
+        }
+
+        .doc-acoes {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            flex-shrink: 0;
+        }
+
+        .btn-doc {
+            padding: 7px 14px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.2s ease;
+            font-family: Arial, sans-serif;
+            display: block;
+        }
+
+        .btn-ver      { background: #2a5298; color: white; }
+        .btn-ver:hover { background: #1e3c72; }
+        .btn-baixar      { background: #e8f0fe; color: #2a5298; border: 1px solid #2a5298; }
+        .btn-baixar:hover { background: #d0e1ff; }
+
+        /* Mensagem vazio */
+        .vazio {
+            text-align: center;
+            color: #999;
+            padding: 40px;
+            font-size: 1rem;
+            display: none;
+        }
+
+        footer {
+            background: #1e3a5f;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .main-layout { flex-direction: column; padding: 15px; }
+            .sidebar-esquerda { position: static; width: 100%; margin-left: 0; }
+            .sidebar-esquerda.fechada { transform: translateX(-100%); position: absolute; }
+            .sidebar-toggle, .reopen-sidebar { top: 120px; left: 15px; width: 40px; height: 40px; font-size: 20px; }
+            .doc-card { flex-wrap: wrap; }
+            .doc-acoes { flex-direction: row; width: 100%; }
+            .btn-doc { flex: 1; }
+        }
+
+        @media (max-width: 480px) {
+            .Title { font-size: 20px; }
+            .logo { width: 80px; height: 80px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="image/LogoEnnio.png" alt="Logo da Escola Ennio Chiesa" class="logo" id="logo">
+        <h1 class="Title">PEI ENNIO CHIESA</h1>
+    </header>
+
+    <button class="sidebar-toggle" id="sidebarToggle" title="Fechar Menu">✖</button>
+    <button class="reopen-sidebar"  id="reopenSidebar"  title="Abrir Menu">☰</button>
+
+    <div class="main-layout">
+
+        <aside class="sidebar-esquerda" id="sidebar">
+            <h3>📋 Menu de Navegação</h3>
+            <nav>
+                <a href="Equipe.html">👥 Nossa Equipe</a>
+                <a href="noticias.html">📰 Ennio Notícias</a>
+                <a href="galeria.html">🖼️ Galeria escolar</a>
+                <a href="historia.html">📖 História da escola</a>
+                <a href="interclasse.html">⚽ Interclasse e esportes</a>
+                <a href="links.html">🔗 Links e redes sociais</a>
+                <a href="documentos.html">📄 Documentos Pedagógicos</a>
+                <a href="projetos.html">💡 Projetos</a>
+            </nav>
+        </aside>
+
+        <main class="conteudo-central">
+            <div class="painel">
+                <h2>📄 Documentos Pedagógicos</h2>
+
+                <!-- Busca -->
+                <div class="busca-wrapper">
+                    <span class="busca-icone">🔍</span>
+                    <input type="text" class="busca-input" id="buscaInput" placeholder="Buscar documento...">
+                </div>
+
+                <!-- Filtros -->
+                <div class="categorias" id="categorias"></div>
+
+                <!-- Lista -->
+                <div class="doc-lista" id="docLista"></div>
+                <div class="vazio" id="vazio">Nenhum documento encontrado.</div>
+            </div>
+        </main>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 PEI Ennio Chiesa - Todos os direitos reservados</p>
+    </footer>
+
+    <script>
+        // =====================================================
+        //  ADICIONE SEUS DOCUMENTOS AQUI
+        //
+        //  nome      -> nome exibido do documento
+        //  descricao -> breve descrição
+        //  categoria -> grupo (vira botão de filtro automaticamente)
+        //  tipo      -> "PDF", "DOC", "PPT", "XLS" — muda o ícone
+        //  data      -> data de publicação (texto livre)
+        //  tamanho   -> tamanho do arquivo (texto livre)
+        //  linkVer   -> URL para abrir/visualizar (Google Drive, etc.)
+        //              deixe "" se não quiser o botão Ver
+        //  linkBaixar-> URL para download direto
+        //              deixe "" se não quiser o botão Baixar
+        // =====================================================
+        const documentos = [
+            {
+                nome: "Projeto Político Pedagógico 2024",
+                descricao: "PPP da escola com diretrizes e metas para o ano letivo.",
+                categoria: "Institucional",
+                tipo: "PDF",
+                data: "Jan/2024",
+                tamanho: "2,4 MB",
+                linkVer: "https://drive.google.com/file/d/SEU_ID/view",
+                linkBaixar: "https://drive.google.com/uc?export=download&id=SEU_ID"
+            },
+            {
+                nome: "Regimento Escolar",
+                descricao: "Normas e regras que regem o funcionamento da escola.",
+                categoria: "Institucional",
+                tipo: "PDF",
+                data: "Mar/2023",
+                tamanho: "1,1 MB",
+                linkVer: "https://drive.google.com/file/d/SEU_ID/view",
+                linkBaixar: ""
+            },
+            {
+                nome: "Plano de Aula — Matemática 1º Ano",
+                descricao: "Sequência didática do 1º bimestre de Matemática.",
+                categoria: "Planos de Aula",
+                tipo: "DOC",
+                data: "Fev/2024",
+                tamanho: "340 KB",
+                linkVer: "",
+                linkBaixar: "https://drive.google.com/uc?export=download&id=SEU_ID"
+            },
+            {
+                nome: "Plano de Aula — Português 2º Ano",
+                descricao: "Atividades de leitura e interpretação de texto.",
+                categoria: "Planos de Aula",
+                tipo: "DOC",
+                data: "Fev/2024",
+                tamanho: "280 KB",
+                linkVer: "",
+                linkBaixar: "https://drive.google.com/uc?export=download&id=SEU_ID"
+            },
+            {
+                nome: "Comunicado — Reunião de Pais Maio",
+                descricao: "Informações sobre a reunião bimestral de pais e mestres.",
+                categoria: "Comunicados",
+                tipo: "PDF",
+                data: "Mai/2024",
+                tamanho: "180 KB",
+                linkVer: "https://drive.google.com/file/d/SEU_ID/view",
+                linkBaixar: "https://drive.google.com/uc?export=download&id=SEU_ID"
+            },
+            {
+                nome: "Calendário Escolar 2024",
+                descricao: "Datas de provas, feriados e eventos do ano letivo.",
+                categoria: "Comunicados",
+                tipo: "PDF",
+                data: "Jan/2024",
+                tamanho: "95 KB",
+                linkVer: "https://drive.google.com/file/d/SEU_ID/view",
+                linkBaixar: "https://drive.google.com/uc?export=download&id=SEU_ID"
+            },
+        ];
+        // =====================================================
+
+        const icones = { PDF: "📕", DOC: "📘", PPT: "📙", XLS: "📗" };
+
+        let categoriaAtiva = "Todas";
+        let termoBusca     = "";
+
+        function obterCategorias() {
+            return ["Todas", ...new Set(documentos.map(d => d.categoria))];
+        }
+
+        function renderizarCategorias() {
+            const div = document.getElementById('categorias');
+            div.innerHTML = '';
+            obterCategorias().forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className   = 'categoria-btn' + (cat === categoriaAtiva ? ' ativo' : '');
+                btn.textContent = cat;
+                btn.onclick = () => { categoriaAtiva = cat; renderizarCategorias(); renderizarDocs(); };
+                div.appendChild(btn);
+            });
+        }
+
+        function renderizarDocs() {
+            const lista  = document.getElementById('docLista');
+            const vazio  = document.getElementById('vazio');
+            const termo  = termoBusca.toLowerCase();
+
+            const filtrados = documentos.filter(d => {
+                const catOk  = categoriaAtiva === "Todas" || d.categoria === categoriaAtiva;
+                const busOk  = !termo
+                    || d.nome.toLowerCase().includes(termo)
+                    || d.descricao.toLowerCase().includes(termo)
+                    || d.categoria.toLowerCase().includes(termo);
+                return catOk && busOk;
+            });
+
+            lista.innerHTML = '';
+
+            if (filtrados.length === 0) {
+                vazio.style.display = 'block';
+                return;
+            }
+            vazio.style.display = 'none';
+
+            filtrados.forEach(doc => {
+                const card = document.createElement('div');
+                card.className = 'doc-card';
+
+                const botoesHTML = `
+                    ${doc.linkVer    ? `<a href="${doc.linkVer}"    target="_blank" class="btn-doc btn-ver"   >👁️ Ver</a>`    : ''}
+                    ${doc.linkBaixar ? `<a href="${doc.linkBaixar}" target="_blank" class="btn-doc btn-baixar">⬇️ Baixar</a>` : ''}
+                `;
+
+                card.innerHTML = `
+                    <div class="doc-icone">${icones[doc.tipo] || '📄'}</div>
+                    <div class="doc-info">
+                        <div class="doc-nome">${doc.nome}</div>
+                        <div class="doc-descricao">${doc.descricao}</div>
+                        <div class="doc-meta">
+                            <span class="doc-tag">${doc.tipo}</span>
+                            <span>📅 ${doc.data}</span>
+                            ${doc.tamanho ? `<span>💾 ${doc.tamanho}</span>` : ''}
+                        </div>
+                    </div>
+                    <div class="doc-acoes">${botoesHTML}</div>
+                `;
+
+                lista.appendChild(card);
+            });
+        }
+
+        document.getElementById('buscaInput').addEventListener('input', function () {
+            termoBusca = this.value;
+            renderizarDocs();
+        });
+
+        // Sidebar
+        const sidebar   = document.getElementById('sidebar');
+        const toggleBtn = document.getElementById('sidebarToggle');
+        const reopenBtn = document.getElementById('reopenSidebar');
+
+        function fecharSidebar() {
+            sidebar.classList.add('fechada');
+            toggleBtn.style.display = 'none';
+            reopenBtn.classList.add('visible');
+            localStorage.setItem('sidebarFechada', 'true');
+        }
+
+        function abrirSidebar() {
+            sidebar.classList.remove('fechada');
+            toggleBtn.style.display = 'flex';
+            reopenBtn.classList.remove('visible');
+            localStorage.setItem('sidebarFechada', 'false');
+        }
+
+        toggleBtn.addEventListener('click', fecharSidebar);
+        reopenBtn.addEventListener('click', abrirSidebar);
+        if (localStorage.getItem('sidebarFechada') === 'true') fecharSidebar(); else abrirSidebar();
+
+        document.getElementById('logo').addEventListener('click', () => { window.location.href = 'index.html'; });
+
+        window.addEventListener('scroll', function () {
+            const s = window.pageYOffset || document.documentElement.scrollTop;
+            if (toggleBtn) toggleBtn.style.top = Math.max(170 - s, 20) + 'px';
+            if (reopenBtn) reopenBtn.style.top  = Math.max(170 - s, 20) + 'px';
+        });
+
+        renderizarCategorias();
+        renderizarDocs();
+    </script>
+</body>
+</html>
