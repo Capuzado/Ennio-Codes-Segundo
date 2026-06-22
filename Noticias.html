@@ -605,6 +605,15 @@
             `).join('');
         }
 
+        function verificarNoticiaVindaDoIndex() {
+    const id = sessionStorage.getItem('abrirNoticiaId');
+    if (!id) return;
+    sessionStorage.removeItem('abrirNoticiaId');
+    setTimeout(() => {
+        abrirModal(parseInt(id));
+    }, 300);
+}
+
         function getCategoriaNome(categoria) {
             const categorias = {
                 'eventos': '🎉 Eventos',
@@ -702,6 +711,8 @@
 
         // Inicializar
         renderizarNoticias();
+        verificarNoticiaVindaDoIndex();
+
     </script>
 </body>
 </html>
