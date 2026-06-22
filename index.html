@@ -475,28 +475,28 @@
 
     <script>
         // NOTÍCIAS
-        const noticias = [
-            {
-                imagem: "image/reportagem1.jpg",
-                descricao: " Festa Junina Chegando no Ennio Chiesa! Se preparem para muita diversão das 07 as 16. ",
-                link: "https://www.exemplo.com/noticia1"
-            },
-            {
-                imagem: "image/galinhateste.jpg",
-                descricao: " Broo",
-                link: "https://www.exemplo.com/noticia2"
-            },
-            {
-                imagem: "image/ratoteste.jpg",
-                descricao: " Omaigaaaaaaaa",
-                link: "https://www.exemplo.com/noticia3"
-            },
-            {
-                imagem: "image/ornintorrincoteste.jpg",
-                descricao: " niggers",
-                link: "https://www.exemplo.com/noticia4"
-            }
-        ];
+       const noticias = [
+    {
+        imagem: "image/reportagem1.jpg",
+        descricao: "Festa Junina chegando no Ennio Chiesa! Se preparem para muita diversão das 07 as 16.",
+        noticiaId: 2   // ← ID da notícia na página ennio-noticias.html
+    },
+    {
+        imagem: "image/galinhateste.jpg",
+        descricao: "Broo",
+        noticiaId: null
+    },
+    {
+        imagem: "image/ratoteste.jpg",
+        descricao: "Omaigaaaaaaaa",
+        noticiaId: null
+    },
+    {
+        imagem: "image/ornintorrincoteste.jpg",
+        descricao: "niggers",
+        noticiaId: null
+    }
+];
 
         let indiceAtual = 0;
         let intervalo;
@@ -620,18 +620,19 @@
         }
         
        
-        document.addEventListener('click', function(e) {
-            const imagem = document.getElementById('noticiaImagem');
-            const descricao = document.getElementById('noticiaDescricao');
-            
-            if (e.target === imagem || e.target === descricao || 
-                imagem.contains(e.target) || descricao.contains(e.target)) {
-                const link = noticias[indiceAtual].link;
-                if (link) {
-                    window.open(link, '_blank');
-                }
-            }
-        });
+       document.getElementById('noticiaImagem').addEventListener('click', function() {
+    const noticia = noticias[indiceAtual];
+    if (!noticia.noticiaId) return;
+    sessionStorage.setItem('abrirNoticiaId', noticia.noticiaId);
+    window.location.href = 'ennio-noticias.html';
+});
+
+document.getElementById('noticiaDescricao').addEventListener('click', function() {
+    const noticia = noticias[indiceAtual];
+    if (!noticia.noticiaId) return;
+    sessionStorage.setItem('abrirNoticiaId', noticia.noticiaId);
+    window.location.href = 'ennio-noticias.html';
+});
         
        
         atualizarIndicadores();
