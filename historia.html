@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ennio Chiesa - História da Escola</title>
+    <link rel="shortcut icon" href="image/LogoEnnio.png" type="image/x-icon">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            overflow-x: hidden;
+        }
+
+        header {
+            position: relative;
+            background: url(image/escolafrontal.jpg) center/cover;
+            color: white;
+            padding: 1rem;
+            display: flex;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg,
+                rgb(56, 0, 0) 0%,
+                rgba(51, 0, 0, 0.8) 30%,
+                rgba(133, 19, 19, 0.466) 70%);
+            pointer-events: none;
+        }
+
+        header > * { position: relative; z-index: 1; }
+
+        .logo {
+            width: 130px; height: 130px;
+            object-fit: contain;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .logo:hover { transform: scale(1.05); }
+        .Title { font-size: 28px; }
+
+        .sidebar-toggle {
+            position: fixed;
+            left: 20px; top: 170px;
+            z-index: 1000;
+            background: #2a5298;
+            color: white;
+            border: none;
+            width: 45px; height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            display: flex;
+            align-items: center; justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .sidebar-toggle:hover { background: #1e3c72; transform: scale(1.1); }
+
+        .reopen-sidebar {
+            position: fixed;
+            left: 20px; top: 170px;
+            z-index: 1000;
+            background: #2a5298;
+            color: white;
+            border: none;
+            width: 45px; height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            display: none;
+            align-items: center; justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .reopen-sidebar:hover { background: #1e3c72; transform: scale(1.1); }
+        .reopen-sidebar.visible { display: flex; }
+
+        .main-layout {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            gap: 30px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-esquerda {
+            width: 280px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 20px;
+            align-self: flex-start;
+            height: fit-content;
+            background: white;
+            border-radius: 10px;
+            padding: 20px 15px 20px 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            margin-left: -10px;
+        }
+
+        .sidebar-esquerda.fechada {
+            transform: translateX(-120%);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .sidebar-esquerda h3 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #2a5298;
+            text-align: left;
+            font-size: 1.2rem;
+        }
+
+        .sidebar-esquerda nav { display: flex; flex-direction: column; gap: 8px; }
+
+        .sidebar-esquerda a {
+            color: #333;
+            text-decoration: none;
+            padding: 10px 12px;
+            background: #f5f5f5;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-esquerda a:hover {
+            background: #2a5298;
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .conteudo-central { flex: 1; min-width: 0; }
+
+        .painel {
+            background: white;
+            border-radius: 15px;
+            padding: 35px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .painel h2 {
+            color: #1e3c72;
+            font-size: 2rem;
+            text-align: center;
+            border-bottom: 3px solid #2a5298;
+            padding-bottom: 12px;
+            margin-bottom: 30px;
+        }
+
+        .texto-historia {
+            font-size: 1rem;
+            color: #333;
+            line-height: 1.9;
+            text-align: justify;
+            max-width: 820px;
+            margin: 0 auto 40px auto;
+        }
+
+        .texto-historia p { margin-bottom: 16px; }
+        .nome-destaque { font-weight: bold; color: #1e3c72; }
+
+        /* ── SEÇÃO DE FOTOS ── */
+        .secao-foto {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px 25px 15px;
+            margin-bottom: 20px;
+            border: 1px solid #e8ecf0;
+        }
+
+        .secao-foto-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .secao-foto-header h3 {
+            color: #1e3c72;
+            font-size: 1.2rem;
+            border-left: 4px solid #2a5298;
+            padding-left: 10px;
+        }
+
+        .secao-foto-header p {
+            color: #888;
+            font-size: 0.85rem;
+            padding-left: 14px;
+            margin-top: 3px;
+        }
+
+        .upload-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 18px;
+            background: #2a5298;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: Arial, sans-serif;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        .upload-label:hover { background: #1e3c72; transform: scale(1.03); }
+
+        /* ── GRADE EM RETÂNGULO PÉ (portrait) ── */
+        .foto-grade {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        /* Cada slot: retângulo vertical */
+        .foto-slot {
+            position: relative;
+            width: calc(25% - 12px);   /* 4 por linha */
+            aspect-ratio: 3 / 4;       /* proporção retrato */
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #ddd;
+            background: #e8ecf0;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .foto-slot:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+        }
+
+        .foto-slot img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Slot vazio */
+        .foto-slot.vazio {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: 2px dashed #c0c8d8;
+            cursor: default;
+        }
+        .foto-slot.vazio:hover { transform: none; box-shadow: none; }
+        .foto-slot.vazio .icone-vazio { font-size: 30px; color: #a0aec0; }
+        .foto-slot.vazio span { font-size: 11px; color: #a0aec0; text-align: center; padding: 0 8px; }
+
+        /* Overlay nome */
+        .foto-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(30,60,114,0.78) 0%, transparent 55%);
+            opacity: 0;
+            transition: opacity 0.2s;
+            display: flex;
+            align-items: flex-end;
+            padding: 12px;
+        }
+        .foto-slot:hover .foto-overlay { opacity: 1; }
+        .foto-overlay-nome {
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .foto-info {
+            font-size: 13px;
+            color: #888;
+            margin-top: 12px;
+            text-align: right;
+        }
+
+        /* ── MODAL ── */
+        .modal-fundo {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-fundo.aberto { display: flex; }
+
+        .modal-img {
+            max-width: 60vw;
+            max-height: 88vh;
+            border-radius: 10px;
+            display: block;
+            object-fit: contain;
+        }
+
+        .modal-fechar {
+            position: absolute;
+            top: 18px; right: 22px;
+            background: rgba(255,255,255,0.15);
+            border: none;
+            color: white;
+            border-radius: 50%;
+            width: 42px; height: 42px;
+            font-size: 22px;
+            cursor: pointer;
+            display: flex;
+            align-items: center; justify-content: center;
+            transition: background 0.15s;
+        }
+        .modal-fechar:hover { background: rgba(255,255,255,0.28); }
+
+        .modal-legenda {
+            position: absolute;
+            bottom: 22px; left: 0; right: 0;
+            color: rgba(255,255,255,0.88);
+            font-size: 14px;
+            text-align: center;
+        }
+
+        footer {
+            background: #1e3a5f;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .foto-slot { width: calc(33.33% - 11px); }
+        }
+
+        @media (max-width: 768px) {
+            .main-layout { flex-direction: column; padding: 15px; }
+            .sidebar-esquerda { position: static; width: 100%; margin-left: 0; }
+            .sidebar-esquerda.fechada { transform: translateX(-100%); position: absolute; }
+            .sidebar-toggle, .reopen-sidebar { top: 120px; left: 15px; width: 40px; height: 40px; font-size: 20px; }
+            .painel { padding: 20px; }
+            .foto-slot { width: calc(50% - 8px); }
+            .modal-img { max-width: 88vw; max-height: 80vh; }
+            .Title { font-size: 20px; }
+            .logo { width: 80px; height: 80px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="image/LogoEnnio2.png" alt="Logo da Escola Ennio Chiesa" class="logo" id="logo">
+        <h1 class="Title">PEI ENNIO CHIESA</h1>
+    </header>
+
+    <button class="sidebar-toggle" id="sidebarToggle" title="Fechar Menu">✖</button>
+    <button class="reopen-sidebar" id="reopenSidebar" title="Abrir Menu">☰</button>
+
+    <div class="main-layout">
+
+        <aside class="sidebar-esquerda" id="sidebar">
+            <h3>Menu de Navegação</h3>
+            <nav>
+                <a href="Equipe.html">Nossa Equipe</a>
+                <a href="galeria.html">Galeria escolar</a>
+                <a href="historia.html">História da escola</a>
+                <a href="interclasse.html">Interclasse e esportes</a>
+                <a href="links.html">Links e redes sociais</a>
+                <a href="documentos.html">Documentos Pedagógicos</a>
+                <a href="ennio-noticias.html">Ennio Notícias</a>
+            </nav>
+        </aside>
+
+        <main class="conteudo-central">
+            <div class="painel">
+                <h2>História da Escola</h2>
+
+                <div class="texto-historia">
+                    <p>
+                        <span class="nome-destaque">Ennio Chiesa</span> nasceu aos 28 de outubro de 1915,
+                        na cidade de Vedano Olona, província de Varese, Itália. O pai Ennio Chiesa,
+                        ainda criança, veio com seus pais da Itália para o Brasil, acompanhado de sua família,
+                        radicando-se no Estado do Rio Grande do Sul, na cidade de Flores da Cunha.
+                        O professor salesiano Santa Maria Eufrásia Alves de Andrade pôde
+                        permitir e completar sua formação de professor com os padres Salesianos de Dom Bosco,
+                        tendo se diplomado em Filosofia e Pedagogia. Iniciou o magistério secundário em 1935
+                        no Colégio Santa Rosa de Niterói, em 1937 organizou os serviços da Secretaria
+                        do Colégio Dom Bosco de Campo Grande, MG, onde também foi professor. Lecionou
+                        em vários colégios, sempre ao serviço do Coração de Jesus. Com toda sua
+                        inteligência, dinamismo e bondade. Em 1948, sob sua direção, sempre foi apontado
+                        pelas autoridades estaduais como um modelo de ensino.
+                    </p>
+                    <p>
+                        Em 1969, solicitado pelos padres Claretianos de Guarulhos para dirigir o
+                        Colégio Claretiano, aqui se instalou com toda a experiência e a capacidade
+                        de educador, realizando um trabalho extraordinário, a tal ponto de
+                        ser um grande Diretor, mas também amigo e orientador vocacional
+                        para os alunos e conselheiro para as famílias. Mostrou uma enorme capacidade de
+                        trabalho, uma honestidade profissional e bondade e desprendimento
+                        pessoal incomparáveis. Foi também na Direção Geral da Faculdade Farias Brito,
+                        direção esta que exerceu com alto espírito de pertença até ao seu falecer.
+                    </p>
+                    <p>
+                        Ennio Chiesa, além de extraordinário orador, poeta e poliglota,
+                        foi autor de vários livros de cunho educativo, especialmente voltados
+                        para crianças. É portador do prêmio Pedro Álvares Cabral em
+                        História e Geografia Brasileiras, por suas qualidades dedicadas à Educação.
+                    </p>
+                    <p>
+                        A vida deste grande Educador não pode ser apresentada em toda a sua plenitude
+                        nesta simples biografia, mesmo porque tudo o que fazia era sempre animado com um
+                        imenso espírito de humildade e simplicidade, características do seu grande coração.
+                    </p>
+                </div>
+
+                <!-- SEÇÃO 1: História da Escola -->
+                <div class="secao-foto">
+                    <div class="secao-foto-header">
+                        <div>
+                            <h3>Fotos da História da Escola</h3>
+                            <p>Clique em uma foto para ampliar</p>
+                        </div>
+                        <label class="upload-label" for="inputHistoria">+ Adicionar fotos</label>
+                        <input type="file" id="inputHistoria" accept="image/*" multiple style="display:none">
+                    </div>
+                    <div class="foto-grade" id="gradeHistoria"></div>
+                    <div class="foto-info" id="infoHistoria"></div>
+                </div>
+
+                <!-- SEÇÃO 2: Ennio Chiesa -->
+                <div class="secao-foto">
+                    <div class="secao-foto-header">
+                        <div>
+                            <h3>Fotos de Ennio Chiesa</h3>
+                            <p>Clique em uma foto para ampliar</p>
+                        </div>
+                        <label class="upload-label" for="inputEnnio">+ Adicionar fotos</label>
+                        <input type="file" id="inputEnnio" accept="image/*" multiple style="display:none">
+                    </div>
+                    <div class="foto-grade" id="gradeEnnio"></div>
+                    <div class="foto-info" id="infoEnnio"></div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <div class="modal-fundo" id="modal">
+        <button class="modal-fechar" id="modalFechar">✕</button>
+        <img class="modal-img" id="modalImg" src="" alt="">
+        <div class="modal-legenda" id="modalLegenda"></div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 PEI Ennio Chiesa - Todos os direitos reservados</p>
+    </footer>
+
+    <script>
+        // ══════════════════════════════════════════════════
+        //  CONFIGURAÇÃO DE SLOTS
+        // ══════════════════════════════════════════════════
+        const TOTAL_SLOTS_HISTORIA = 1;
+        const TOTAL_SLOTS_ENNIO    = 1;
+
+        // ══════════════════════════════════════════════════
+        //  IMAGENS PRÉ-CARREGADAS
+        //  → já aparecem ao abrir a página
+        // ══════════════════════════════════════════════════
+        const estado = {
+            historia: [
+                { src: 'image/EnniochiesaHistoria.jpg', nome: 'História do Ennio Chiesa' }
+            ],
+            ennio: [
+                { src: 'image/Ennio.jpg', nome: 'Ennio Chiesa' }
+            ]
+        };
+
+        // ══════════════════════════════════════════════════
+        //  MODAL
+        // ══════════════════════════════════════════════════
+        const modal    = document.getElementById('modal');
+        const modalImg = document.getElementById('modalImg');
+        const modalLeg = document.getElementById('modalLegenda');
+
+        function abrirModal(src, nome) {
+            modalImg.src         = src;
+            modalImg.alt         = nome;
+            modalLeg.textContent = nome;
+            modal.classList.add('aberto');
+        }
+
+        document.getElementById('modalFechar').addEventListener('click', () => modal.classList.remove('aberto'));
+        modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('aberto'); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') modal.classList.remove('aberto'); });
+
+        // ══════════════════════════════════════════════════
+        //  RENDERIZA GRADE
+        // ══════════════════════════════════════════════════
+        function renderizarGrade(gradeId, infoId, imagens, totalSlots) {
+            const grade = document.getElementById(gradeId);
+            const info  = document.getElementById(infoId);
+            grade.innerHTML = '';
+
+            for (let i = 0; i < totalSlots; i++) {
+                const slot = document.createElement('div');
+                slot.className = 'foto-slot';
+
+                if (i < imagens.length) {
+                    const img = document.createElement('img');
+                    img.src = imagens[i].src;
+                    img.alt = imagens[i].nome;
+
+                    const overlay = document.createElement('div');
+                    overlay.className = 'foto-overlay';
+                    overlay.innerHTML = `<span class="foto-overlay-nome">${imagens[i].nome}</span>`;
+
+                    slot.appendChild(img);
+                    slot.appendChild(overlay);
+
+                    const idx = i;
+                    slot.addEventListener('click', () => abrirModal(imagens[idx].src, imagens[idx].nome));
+                } else {
+                    slot.classList.add('vazio');
+                    slot.innerHTML = `
+                        <span class="icone-vazio">🖼️</span>
+                        <span>Adicione uma foto</span>
+                    `;
+                }
+
+                grade.appendChild(slot);
+            }
+
+            const livres = totalSlots - imagens.length;
+            info.textContent = imagens.length > 0
+                ? `${imagens.length} foto${imagens.length !== 1 ? 's' : ''} adicionada${imagens.length !== 1 ? 's' : ''} · ${livres} espaço${livres !== 1 ? 's' : ''} disponível${livres !== 1 ? 'is' : ''}`
+                : 'Nenhuma foto adicionada ainda.';
+        }
+
+        // ══════════════════════════════════════════════════
+        //  UPLOAD
+        // ══════════════════════════════════════════════════
+        function configurarUpload(inputId, chaveEstado, totalSlots, gradeId, infoId) {
+            document.getElementById(inputId).addEventListener('change', function(e) {
+                const arquivos = Array.from(e.target.files);
+                let pendentes = 0;
+
+                arquivos.forEach(arquivo => {
+                    if (estado[chaveEstado].length >= totalSlots) return;
+                    pendentes++;
+                    const reader = new FileReader();
+                    reader.onload = ev => {
+                        estado[chaveEstado].push({
+                            src:  ev.target.result,
+                            nome: arquivo.name.replace(/\.[^.]+$/, '')
+                        });
+                        pendentes--;
+                        if (pendentes === 0) renderizarGrade(gradeId, infoId, estado[chaveEstado], totalSlots);
+                    };
+                    reader.readAsDataURL(arquivo);
+                });
+
+                this.value = '';
+            });
+        }
+
+        // ══════════════════════════════════════════════════
+        //  INICIALIZAÇÃO
+        // ══════════════════════════════════════════════════
+        configurarUpload('inputHistoria', 'historia', TOTAL_SLOTS_HISTORIA, 'gradeHistoria', 'infoHistoria');
+        configurarUpload('inputEnnio',    'ennio',    TOTAL_SLOTS_ENNIO,    'gradeEnnio',    'infoEnnio');
+
+        renderizarGrade('gradeHistoria', 'infoHistoria', estado.historia, TOTAL_SLOTS_HISTORIA);
+        renderizarGrade('gradeEnnio',    'infoEnnio',    estado.ennio,    TOTAL_SLOTS_ENNIO);
+
+        // ══════════════════════════════════════════════════
+        //  SIDEBAR
+        // ══════════════════════════════════════════════════
+        const sidebar   = document.getElementById('sidebar');
+        const toggleBtn = document.getElementById('sidebarToggle');
+        const reopenBtn = document.getElementById('reopenSidebar');
+
+        function fecharSidebar() {
+            sidebar.classList.add('fechada');
+            toggleBtn.style.display = 'none';
+            reopenBtn.classList.add('visible');
+            localStorage.setItem('sidebarFechada', 'true');
+        }
+
+        function abrirSidebar() {
+            sidebar.classList.remove('fechada');
+            toggleBtn.style.display = 'flex';
+            reopenBtn.classList.remove('visible');
+            localStorage.setItem('sidebarFechada', 'false');
+        }
+
+        toggleBtn.addEventListener('click', fecharSidebar);
+        reopenBtn.addEventListener('click', abrirSidebar);
+
+        if (localStorage.getItem('sidebarFechada') === 'true') {
+            fecharSidebar();
+        } else {
+            abrirSidebar();
+        }
+
+        document.getElementById('logo').addEventListener('click', function() {
+            window.location.href = 'index.html';
+        });
+
+        window.addEventListener('scroll', function() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            toggleBtn.style.top = Math.max(170 - scrollTop, 20) + 'px';
+            reopenBtn.style.top = Math.max(170 - scrollTop, 20) + 'px';
+        });
+    </script>
+</body>
+</html>

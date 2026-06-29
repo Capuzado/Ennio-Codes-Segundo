@@ -367,6 +367,173 @@
         }
     </style>
 </head>
+
+<!-- =====================================================
+     BLOQUEIO DE PÁGINA — "EM CONSTRUÇÃO"
+     
+     Para BLOQUEAR:  mude PAGINA_ATIVA para false
+     Para LIBERAR:   mude PAGINA_ATIVA para true
+     
+     Pode colar esse bloco em qualquer página do site.
+====================================================== -->
+<style>
+    #tela-construcao {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #1e3c72 100%);
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
+        padding: 30px;
+    }
+
+    #tela-construcao.ativo {
+        display: flex;
+    }
+
+    .construcao-logo {
+        width: 120px;
+        height: 120px;
+        object-fit: contain;
+        margin-bottom: 24px;
+        filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));
+    }
+
+    .construcao-icone {
+        font-size: 72px;
+        margin-bottom: 20px;
+        animation: balanco 2s ease-in-out infinite;
+    }
+
+    @keyframes balanco {
+        0%, 100% { transform: rotate(-8deg); }
+        50%       { transform: rotate(8deg); }
+    }
+
+    .construcao-titulo {
+        font-family: Arial, sans-serif;
+        font-size: 2.4rem;
+        font-weight: bold;
+        color: #ffffff;
+        margin-bottom: 12px;
+        text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .construcao-subtitulo {
+        font-family: Arial, sans-serif;
+        font-size: 1.1rem;
+        color: rgba(255,255,255,0.80);
+        max-width: 440px;
+        line-height: 1.7;
+        margin-bottom: 36px;
+    }
+
+    .construcao-barra {
+        width: 280px;
+        height: 6px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 999px;
+        overflow: hidden;
+        margin-bottom: 36px;
+    }
+
+    .construcao-barra-inner {
+        height: 100%;
+        width: 0%;
+        background: #ffffff;
+        border-radius: 999px;
+        animation: carregando 3s ease-in-out infinite;
+    }
+
+    @keyframes carregando {
+        0%   { width: 0%;   opacity: 1; }
+        70%  { width: 100%; opacity: 1; }
+        100% { width: 100%; opacity: 0; }
+    }
+
+    .construcao-voltar {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 28px;
+        background: rgba(255,255,255,0.15);
+        color: white;
+        font-family: Arial, sans-serif;
+        font-size: 0.95rem;
+        font-weight: bold;
+        border: 2px solid rgba(255,255,255,0.4);
+        border-radius: 8px;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(4px);
+    }
+
+    .construcao-voltar:hover {
+        background: rgba(255,255,255,0.28);
+        border-color: white;
+        transform: translateY(-2px);
+    }
+
+    .construcao-badge {
+        position: absolute;
+        bottom: 24px;
+        right: 28px;
+        font-family: Arial, sans-serif;
+        font-size: 11px;
+        color: rgba(255,255,255,0.35);
+        letter-spacing: 0.05em;
+    }
+</style>
+
+<!-- Tela de bloqueio (aparece por cima do conteúdo) -->
+<div id="tela-construcao">
+    <img src="image/LogoEnnio2.png" alt="Logo" class="construcao-logo">
+    <div class="construcao-icone">🚧</div>
+    <div class="construcao-titulo">Página em Construção</div>
+    <div class="construcao-subtitulo">
+        Estamos preparando algo incrível para você!<br>
+        Esta seção estará disponível em breve.
+    </div>
+    <div class="construcao-barra">
+        <div class="construcao-barra-inner"></div>
+    </div>
+    <a href="index.html" class="construcao-voltar">← Voltar para o início</a>
+    <div class="construcao-badge">PEI Ennio Chiesa</div>
+</div>
+
+<script>
+    // ╔══════════════════════════════════════════╗
+    // ║  MUDE AQUI PARA BLOQUEAR OU LIBERAR      ║
+    // ║                                           ║
+    // ║  false = página BLOQUEADA                 ║
+    // ║  true  = página LIBERADA (normal)         ║
+    // ╚══════════════════════════════════════════╝
+    const PAGINA_ATIVA = false;
+
+
+    // — Não mexa abaixo desta linha —
+    if (!PAGINA_ATIVA) {
+        // Ativa a tela de bloqueio
+        document.getElementById('tela-construcao').classList.add('ativo');
+
+        // Trava o scroll da página por baixo
+        document.body.style.overflow = 'hidden';
+
+        // Desativa todos os links e botões da página por baixo
+        // para não navegarem se o usuário inspecionar o código
+        document.querySelectorAll('a, button').forEach(el => {
+            if (!el.closest('#tela-construcao')) {
+                el.style.pointerEvents = 'none';
+            }
+        });
+    }
+</script>
+<!-- ===== FIM DO BLOQUEIO ===== -->
+
 <body>
 
     <header>
