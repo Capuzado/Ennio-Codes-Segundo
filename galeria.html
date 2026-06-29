@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ennio Chiesa - Galeria</title>
+    <link rel="shortcut icon" href="image/LogoEnnio.png" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            overflow-x: hidden;
+        }
+
+        header {
+            position: relative;
+            background: url(image/escolafrontal.jpg) center/cover;
+            color: white;
+            padding: 1rem;
+            display: flex;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg,
+                rgb(56,0,0) 0%,
+                rgba(51,0,0,0.8) 30%,
+                rgba(133,19,19,0.466) 70%);
+            pointer-events: none;
+        }
+
+        header > * { position: relative; z-index: 1; }
+
+        .logo {
+            width: 130px; height: 130px;
+            object-fit: contain;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .logo:hover { transform: scale(1.05); }
+
+        .Title { font-size: 28px; }
+
+        .sidebar-toggle,
+        .reopen-sidebar {
+            position: fixed;
+            left: 20px; top: 170px;
+            z-index: 1000;
+            background: #2a5298;
+            color: white;
+            border: none;
+            width: 45px; height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .sidebar-toggle:hover,
+        .reopen-sidebar:hover {
+            background: #1e3c72;
+            transform: scale(1.1);
+        }
+        .reopen-sidebar { display: none; }
+        .reopen-sidebar.visible { display: flex; }
+
+        .main-layout {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            gap: 30px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-esquerda {
+            width: 280px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 20px;
+            align-self: flex-start;
+            height: fit-content;
+            background: white;
+            border-radius: 10px;
+            padding: 20px 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            margin-left: -10px;
+        }
+
+        .sidebar-esquerda.fechada {
+            transform: translateX(-120%);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .sidebar-esquerda h3 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #2a5298;
+            font-size: 1.2rem;
+        }
+
+        .sidebar-esquerda nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar-esquerda a {
+            color: #333;
+            text-decoration: none;
+            padding: 10px 12px;
+            background: #f5f5f5;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-esquerda a:hover {
+            background: #2a5298;
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .conteudo-central { flex: 1; min-width: 0; }
+
+        .galeria-painel {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .galeria-painel h2 {
+            color: #1e3c72;
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 8px;
+            border-bottom: 3px solid #2a5298;
+            padding-bottom: 10px;
+        }
+
+        .categorias {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: 18px 0 22px;
+        }
+
+        .categoria-btn {
+            padding: 7px 18px;
+            border: 2px solid #2a5298;
+            border-radius: 20px;
+            background: white;
+            color: #2a5298;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-family: Arial, sans-serif;
+        }
+
+        .categoria-btn:hover,
+        .categoria-btn.ativo {
+            background: #2a5298;
+            color: white;
+        }
+
+        .galeria-grade {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+        }
+
+        .galeria-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            aspect-ratio: 1 / 1;
+            background: #e9ecef;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .galeria-item:hover {
+            transform: scale(1.04);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.22);
+            z-index: 2;
+        }
+
+        .galeria-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: opacity 0.3s ease;
+        }
+
+        .galeria-item .overlay {
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 100%;
+            background: linear-gradient(transparent, rgba(30,60,114,0.88));
+            color: white;
+            padding: 22px 10px 10px;
+            font-size: 0.82rem;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            text-align: center;
+        }
+
+        .galeria-item:hover .overlay {
+            transform: translateY(0);
+        }
+
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.92);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeIn 0.2s ease;
+        }
+
+        @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+        .lightbox.aberto { display: flex; }
+
+        .lightbox-conteudo {
+            position: relative;
+            max-width: 900px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .lightbox-conteudo img {
+            max-width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 0 40px rgba(0,0,0,0.5);
+        }
+
+        .lightbox-legenda {
+            color: #dde;
+            margin-top: 12px;
+            font-size: 1rem;
+        }
+
+        .lb-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.15);
+            color: white;
+            border: none;
+            width: 48px; height: 48px;
+            border-radius: 50%;
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .lb-btn:hover { background: rgba(255,255,255,0.3); }
+        .lb-prev { left: -60px; }
+        .lb-next { right: -60px; }
+
+        .lb-fechar {
+            position: absolute;
+            top: -45px; right: 0;
+            background: none;
+            color: white;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+        .lb-fechar:hover { opacity: 1; }
+
+        .lb-contador {
+            color: #aab;
+            font-size: 0.85rem;
+            margin-top: 6px;
+        }
+
+        footer {
+            background: #1e3a5f;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 1024px) {
+            .galeria-grade { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .main-layout { flex-direction: column; padding: 15px; }
+            .sidebar-esquerda { position: static; width: 100%; margin-left: 0; }
+            .sidebar-esquerda.fechada { transform: translateX(-100%); position: absolute; }
+            .sidebar-toggle, .reopen-sidebar { top: 120px; left: 15px; width: 40px; height: 40px; font-size: 20px; }
+            .galeria-grade { grid-template-columns: repeat(2, 1fr); }
+            .lb-prev { left: -10px; }
+            .lb-next { right: -10px; }
+        }
+
+        @media (max-width: 480px) {
+            .galeria-grade { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+            .Title { font-size: 20px; }
+            .logo { width: 80px; height: 80px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="image/LogoEnnio.png" alt="Logo da Escola Ennio Chiesa" class="logo" id="logo">
+        <h1 class="Title">PEI ENNIO CHIESA</h1>
+    </header>
+
+    <button class="sidebar-toggle" id="sidebarToggle" title="Fechar Menu">✖</button>
+    <button class="reopen-sidebar"  id="reopenSidebar"  title="Abrir Menu">☰</button>
+
+    <div class="main-layout">
+
+        <<aside class="sidebar-esquerda" id="sidebar">
+    <h3>Menu de Navegação</h3>
+    <nav>
+        <a href="Equipe.html">Nossa Equipe</a>
+        <a href="galeria.html">Galeria escolar</a>
+        <a href="historia.html">História da escola</a>
+        <a href="interclasse.html">Interclasse e esportes</a>
+        <a href="links.html">Links e redes sociais</a>
+        <a href="documentos.html">Documentos Pedagógicos</a>
+        <a href="ennio-noticias.html">Ennio Notícias</a>
+    </nav>
+</aside>
+
+        <main class="conteudo-central">
+            <div class="galeria-painel">
+                <h2>Galeria Escolar</h2>
+                <div class="categorias" id="categorias"></div>
+                <div class="galeria-grade" id="galeriaGrade"></div>
+            </div>
+        </main>
+    </div>
+
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-conteudo">
+            <button class="lb-fechar" id="lbFechar">✕</button>
+            <button class="lb-btn lb-prev" id="lbPrev">&#8592;</button>
+            <img id="lbImagem" src="" alt="">
+            <button class="lb-btn lb-next" id="lbNext">&#8594;</button>
+            <p class="lightbox-legenda" id="lbLegenda"></p>
+            <p class="lb-contador" id="lbContador"></p>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 PEI Ennio Chiesa - Todos os direitos reservados</p>
+    </footer>
+
+    <script>
+        // =====================================================
+        //  ADICIONE SUAS FOTOS AQUI
+        //  src      -> caminho da imagem (ex: "image/foto1.jpg")
+        //  legenda  -> texto que aparece no hover e no lightbox
+        //  categoria -> nome do grupo (vira botão de filtro automaticamente)
+        // =====================================================
+        const fotos = [
+            { src: "image/PatioEscola1.jpeg", legenda: "Pátio da escola", categoria: "Estrutura" },
+            { src: "image/PatioEscola2.jpeg", legenda: "Pátio da escola", categoria: "Estrutura" },
+            { src: "image/PalcoEscola.jpeg", legenda: "Palco", categoria: "Estrutura" },
+            { src: "image/EscadaEscola.jpeg", legenda: "Escada", categoria: "Estrutura" },
+            { src: "image/CorredorDasSalasEscola.jpeg", legenda: "Corredor das salas", categoria: "Estrutura"},
+            { src: "image/escolafrontal.jpg", legenda: "Frente da escola", categoria: "Estrutura"},
+            { src: "image/Cantina.jpeg", legenda: "Cantina", categoria: "Estrutura"   },
+            { src: "image/ExternoEscola1.jpeg", legenda: "Externo", categoria: "Estrutura"   },
+            { src: "image/ExternoEscola2.jpeg", legenda: "Externo", categoria: "Estrutura"   },
+            { src: "image/SalaDeLeitura.jpeg", legenda: "Sala de Leitura", categoria: "Estrutura"   },
+            { src: "image/Quadra.jpeg", legenda: "Quadra", categoria: "Estrutura"  },
+            { src: "image/foto10.jpg", legenda: "Torneio de vôlei", categoria: "Esportes"  },
+            { src: "image/foto11.jpg", legenda: "Corrida de integração", categoria: "Esportes"  },
+            { src: "image/foto12.jpg", legenda: "Interclasse 2024", categoria: "Esportes"  },
+        ];
+        // =====================================================
+
+        let categoriaAtiva = "Todas";
+        let fotosVisiveis  = [...fotos];
+        let indiceAberto   = 0;
+
+        function obterCategorias() {
+            return ["Todas", ...new Set(fotos.map(f => f.categoria))];
+        }
+
+        function renderizarCategorias() {
+            const div = document.getElementById('categorias');
+            div.innerHTML = '';
+            obterCategorias().forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = 'categoria-btn' + (cat === categoriaAtiva ? ' ativo' : '');
+                btn.textContent = cat;
+                btn.onclick = () => { categoriaAtiva = cat; renderizarCategorias(); renderizarGaleria(); };
+                div.appendChild(btn);
+            });
+        }
+
+        function renderizarGaleria() {
+            fotosVisiveis = categoriaAtiva === "Todas"
+                ? [...fotos]
+                : fotos.filter(f => f.categoria === categoriaAtiva);
+
+            const grade = document.getElementById('galeriaGrade');
+            grade.innerHTML = '';
+
+            if (fotosVisiveis.length === 0) {
+                grade.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#666;padding:40px">Nenhuma foto nesta categoria ainda.</p>';
+                return;
+            }
+
+            fotosVisiveis.forEach((foto, idx) => {
+                const item    = document.createElement('div');
+                item.className = 'galeria-item';
+
+                const img  = document.createElement('img');
+                img.src    = foto.src;
+                img.alt    = foto.legenda;
+                img.loading = 'lazy';
+                img.onerror = function() { this.style.opacity = '0.3'; };
+
+                const overlay = document.createElement('div');
+                overlay.className   = 'overlay';
+                overlay.textContent = foto.legenda;
+
+                item.appendChild(img);
+                item.appendChild(overlay);
+                item.onclick = () => abrirLightbox(idx);
+                grade.appendChild(item);
+            });
+        }
+
+        function abrirLightbox(idx) {
+            indiceAberto = idx;
+            atualizarLightbox();
+            document.getElementById('lightbox').classList.add('aberto');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function fecharLightbox() {
+            document.getElementById('lightbox').classList.remove('aberto');
+            document.body.style.overflow = '';
+        }
+
+        function atualizarLightbox() {
+            const foto = fotosVisiveis[indiceAberto];
+            document.getElementById('lbImagem').src         = foto.src;
+            document.getElementById('lbImagem').alt         = foto.legenda;
+            document.getElementById('lbLegenda').textContent  = foto.legenda;
+            document.getElementById('lbContador').textContent = (indiceAberto + 1) + ' / ' + fotosVisiveis.length;
+        }
+
+        function navLightbox(dir) {
+            indiceAberto = (indiceAberto + dir + fotosVisiveis.length) % fotosVisiveis.length;
+            atualizarLightbox();
+        }
+
+        document.getElementById('lbFechar').onclick = fecharLightbox;
+        document.getElementById('lbPrev').onclick    = () => navLightbox(-1);
+        document.getElementById('lbNext').onclick    = () => navLightbox(1);
+        document.getElementById('lightbox').onclick  = function(e) { if (e.target === this) fecharLightbox(); };
+
+        document.addEventListener('keydown', function(e) {
+            if (!document.getElementById('lightbox').classList.contains('aberto')) return;
+            if (e.key === 'ArrowRight') navLightbox(1);
+            if (e.key === 'ArrowLeft')  navLightbox(-1);
+            if (e.key === 'Escape')     fecharLightbox();
+        });
+
+        const sidebar   = document.getElementById('sidebar');
+        const toggleBtn = document.getElementById('sidebarToggle');
+        const reopenBtn = document.getElementById('reopenSidebar');
+
+        function fecharSidebar() {
+            sidebar.classList.add('fechada');
+            toggleBtn.style.display = 'none';
+            reopenBtn.classList.add('visible');
+            localStorage.setItem('sidebarFechada', 'true');
+        }
+
+        function abrirSidebar() {
+            sidebar.classList.remove('fechada');
+            toggleBtn.style.display = 'flex';
+            reopenBtn.classList.remove('visible');
+            localStorage.setItem('sidebarFechada', 'false');
+        }
+
+        toggleBtn.addEventListener('click', fecharSidebar);
+        reopenBtn.addEventListener('click', abrirSidebar);
+        if (localStorage.getItem('sidebarFechada') === 'true') fecharSidebar(); else abrirSidebar();
+
+        document.getElementById('logo').addEventListener('click', () => { window.location.href = 'index.html'; });
+
+        window.addEventListener('scroll', function() {
+            const s = window.pageYOffset || document.documentElement.scrollTop;
+            if (toggleBtn) toggleBtn.style.top = Math.max(170 - s, 20) + 'px';
+            if (reopenBtn) reopenBtn.style.top  = Math.max(170 - s, 20) + 'px';
+        });
+
+        renderizarCategorias();
+        renderizarGaleria();
+    </script>
+</body>
+</html>
