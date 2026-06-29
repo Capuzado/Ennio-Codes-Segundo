@@ -3,192 +3,655 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ennio Chiesa</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Ennio Chiesa - Notícias</title>
     <link rel="shortcut icon" href="image/LogoEnnio.png" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            overflow-x: hidden;
+        }
+
+        
+        header {
+            position: relative;
+            background: url(image/escolafrontal.jpg) center/cover;
+            color: white;
+            padding: 1rem;
+            display: flex;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                                        rgb(56, 0, 0) 0%,
+                                        rgba(51, 0, 0, 0.8) 30%, 
+                                        rgba(133, 19, 19, 0.466) 70%); 
+            pointer-events: none;
+        }
+
+        header > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo {
+            width: 130px;
+            height: 130px;
+            object-fit: contain;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .Title {
+            font-size: 28px;
+        }
+
+        
+        .sidebar-toggle {
+            position: fixed;
+            left: 20px;
+            top: 170px;
+            z-index: 1000;
+            background: #2a5298;
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .sidebar-toggle:hover {
+            background: #1e3c72;
+            transform: scale(1.1);
+        }
+
+        
+        .main-layout {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            gap: 30px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        
+        .sidebar-esquerda {
+            width: 280px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 20px;
+            align-self: flex-start;
+            height: fit-content;
+            background: white;
+            border-radius: 10px;
+            padding: 20px 15px 20px 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            margin-left: -10px; /* JAMAIS mexa nisso pelo amor de satoshi */
+        }
+
+        
+        .sidebar-esquerda.fechada {
+            transform: translateX(-120%);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .sidebar-esquerda h3 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #2a5298;
+            text-align: left;
+            font-size: 1.2rem;
+        }
+
+        .sidebar-esquerda nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar-esquerda a {
+            color: #333;
+            text-decoration: none;
+            padding: 10px 12px;
+            background: #f5f5f5;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-esquerda a:hover {
+            background: #2a5298;
+            color: white;
+            transform: translateX(5px);
+        }
+
+        
+        .conteudo-central {
+            flex: 1;
+            min-width: 0;
+            transition: all 0.3s ease;
+        }
+
+        
+        .sidebar-esquerda.fechada ~ .conteudo-central {
+            max-width: 100%;
+        }
+
+        
+        .noticias-carrossel {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            min-height: 600px;
+            max-height: 600px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .noticias-carrossel h2 {
+            color: #1e3c72;
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #2a5298;
+            padding-bottom: 10px;
+            flex-shrink: 0;
+        }
+
+        .carrossel-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        
+        .carrossel-imagem {
+            width: 100%;
+            height: 380px !important;
+            min-height: 380px !important;
+            max-height: 380px !important;
+            object-fit: cover !important;
+            object-position: center !important;
+            background-color: #1e3c72;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            margin: 0 auto;
+        }
+
+        .carrossel-imagem:hover {
+            transform: scale(1.02);
+        }
+
+        
+        .carrossel-descricao {
+            margin-top: 15px;
+            font-size: 1.1rem;
+            color: #333;
+            line-height: 1.5;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: opacity 0.3s ease, all 0.3s ease;
+            min-height: 80px;
+            max-height: 80px;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        .carrossel-descricao:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+
+        
+        .indicadores {
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .indicador {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ccc;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .indicador.ativo {
+            background: #2a5298;
+            width: 25px;
+            border-radius: 5px;
+        }
+
+        
+        .controles {
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-shrink: 0;
+        }
+
+        .controles button {
+            padding: 8px 20px;
+            background: #2a5298;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .controles button:hover {
+            background: #1e3c72;
+            transform: scale(1.05);
+        }
+
+        .timer-info {
+            margin-top: 10px;
+            color: #666;
+            font-size: 0.85rem;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        /* RODAPÉ */
+        footer {
+            background: #1e3a5f;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        
+        .reopen-sidebar {
+            position: fixed;
+            left: 20px;
+            top: 170px;
+            z-index: 1000;
+            background: #2a5298;
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .reopen-sidebar:hover {
+            background: #1e3c72;
+            transform: scale(1.1);
+        }
+
+        .reopen-sidebar.visible {
+            display: flex;
+        }
+
+        
+        @media (max-width: 768px) {
+            .main-layout {
+                flex-direction: column;
+                padding: 15px;
+            }
+
+            .sidebar-esquerda {
+                position: static;
+                width: 100%;
+                margin-left: 0;
+            }
+
+            .sidebar-esquerda.fechada {
+                transform: translateX(-100%);
+                position: absolute;
+            }
+
+            .sidebar-toggle, .reopen-sidebar {
+                top: 120px;
+                left: 15px;
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+
+            .noticias-carrossel {
+                min-height: 500px;
+                max-height: 500px;
+            }
+
+            .carrossel-imagem {
+                height: 300px !important;
+                min-height: 300px !important;
+                max-height: 300px !important;
+            }
+
+            .carrossel-descricao {
+                min-height: 70px;
+                max-height: 70px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .noticias-carrossel {
+                min-height: 450px;
+                max-height: 450px;
+                padding: 15px;
+            }
+
+            .carrossel-imagem {
+                height: 250px !important;
+                min-height: 250px !important;
+                max-height: 250px !important;
+            }
+
+            .carrossel-descricao {
+                min-height: 60px;
+                max-height: 60px;
+                font-size: 0.85rem;
+            }
+
+            .Title {
+                font-size: 20px;
+            }
+
+            .logo {
+                width: 80px;
+                height: 80px;
+            }
+        }
+    </style>
 </head>
 <body>
 
-<!-- TOPO -->
-<header>
-    <img src="image/LogoEnnio.png" alt="Logo da Escola Ennio Chiesa" class="logo">
-    <h1>PEI ENNIO CHIESA</h1 class="Title">
-</header>
+    
+    <header>
+        <img src="image/LogoEnnio2.png" alt="Logo da Escola Ennio Chiesa" class="logo" id="logo">
+        <h1 class="Title">PEI ENNIO CHIESA</h1>
+    </header>
 
-<!-- CONTAINER PRINCIPAL: Notícias no meio + Sidebar na direita -->
-<div class="main-wrapper">
+    
+    <button class="sidebar-toggle" id="sidebarToggle" title="Fechar Menu">✖</button>
+    <button class="reopen-sidebar" id="reopenSidebar" title="Abrir Menu">☰</button>
 
-    <!-- CONTEÚDO CENTRAL (NOTÍCIAS) -->
-    <div class="conteudo-central">
+    
+    <div class="main-layout">
 
-        <!-- CARROSSEL DE NOTÍCIAS -->
-        <div class="noticias-carrossel">
-            <h2> Notícias</h2>
+        
+        <aside class="sidebar-esquerda" id="sidebar">
+            <h3> Menu de Navegação</h3>
+            <nav>
+                <a href="Equipe.html"> Nossa Equipe</a>
+                <a href="galeria.html"> Galeria escolar</a>
+                <a href="historia.html"> História da escola</a>
+                <a href="interclasse.html"> Interclasse e esportes</a>
+                <a href="links.html"> Links e redes sociais</a>
+                <a href="documentos.html"> Documentos Pedagógicos</a>
+                <a href="ennio-noticias.html"> Ennio Notícias </a>
+            </nav>
+        </aside>
 
-            <div class="carrossel-container">
-                <img id="noticiaImagem" class="carrossel-imagem" src="" alt="Notícia">
-                <div id="noticiaDescricao" class="carrossel-descricao"></div>
-                <div class="indicadores" id="indicadores"></div>
+        
+        <main class="conteudo-central">
+            <div class="noticias-carrossel">
+                <h2> Notícias</h2>
+
+                <div class="carrossel-container">
+                    <img id="noticiaImagem" class="carrossel-imagem" src="" alt="Notícia">
+                    <div id="noticiaDescricao" class="carrossel-descricao"></div>
+                    
+                    <div class="indicadores" id="indicadores"></div>
+                    
+                    
+                    
+                    
+                </div>
             </div>
-        </div>
 
-        <!-- Você pode adicionar mais conteúdo aqui embaixo se quiser -->
-
+            
+            <div style="background: white; border-radius: 10px; padding: 20px;">
+                <h3> Proximos Eventos</h3>
+                <p>Atividades da escola, fique ligado!</p>
+                <ul style="margin-top: 15px; margin-left: 20px;">
+                    <li> 30/07 - Culminância de Clubes e Eletivas</li>
+                    <li> 03/07 - Festa Junina</li>
+                    <li> 07/07 - Inicio das Férias.</li>
+                </ul>
+            </div>
+        </main>
     </div>
 
-    <!-- SIDEBAR DIREITA -->
-    <aside class="sidebar-direita">
-        <h3> Menu de Navegação</h3>
-        <nav>
-            <a href="Equipe.html"> Nossa Equipe</a>
-            <a href="noticias.html"> Ennio Notícias</a>
-            <a href="galeria.html"> Galeria escolar</a>
-            <a href="historia.html"> História da escola</a>
-            <a href="interclasse.html"> Interclasse e esportes</a>
-            <a href="links.html"> Links e redes sociais</a>
-            <a href="documentos.html"> Documentos Pedagógicos</a>
-        </nav>
+    <footer>
+        <p>&copy; 2024 PEI Ennio Chiesa - Todos os direitos reservados</p>
+    </footer>
 
+    <script>
+        // NOTÍCIAS
+       const noticias = [
+    {
+        imagem: "image/reportagem1.jpg",
+        descricao: "Festa Junina chegando no Ennio Chiesa! Se preparem para muita diversão das 07 as 16.",
+        noticiaId: 2   // ← ID da notícia na página ennio-noticias.html
+    },
+    {
+        imagem: "image/galinhateste.jpg",
+        descricao: "Broo",
+        noticiaId: null
+    },
+    {
+        imagem: "image/ratoteste.jpg",
+        descricao: "Omaigaaaaaaaa",
+        noticiaId: null
+    },
+    {
+        imagem: "image/ornintorrincoteste.jpg",
+        descricao: "niggers",
+        noticiaId: null
+    }
+];
 
-<script>
-   
-    
-    const noticias = [
-        {
-            imagem: "image/focateste.jpg",
-            descricao: "meu deus.",
-            link: "https://www.exemplo.com/noticia1"
-        },
-        {
-            imagem: "image/galinhateste.jpg",
-            descricao: "broo",
-            link: "https://www.exemplo.com/noticia2"
-        },
-        {
-            imagem: "image/ratoteste.jpg",
-            descricao: "omaigaaaaaaaa",
-            link: "https://www.exemplo.com/noticia3"
-        },
-         {
-            imagem: "image/ornintorrincoteste.jpg",
-            descricao: "aoba",
-            link: "https://www.exemplo.com/noticia4"
-        },
+        let indiceAtual = 0;
+        let intervalo;
+        let tempoRestante = 5;
+        let timerElement = document.getElementById('timer');
+
+        // sidebar coisas
+        const sidebar = document.getElementById('sidebar');
+        const toggleBtn = document.getElementById('sidebarToggle');
+        const reopenBtn = document.getElementById('reopenSidebar');
+
+        // fechar sidebar
+        function fecharSidebar() {
+            sidebar.classList.add('fechada');
+            toggleBtn.style.display = 'none';
+            reopenBtn.classList.add('visible');
+            
+           
+            localStorage.setItem('sidebarFechada', 'true');
+        }
+
+        // Abrir Sidebar
+        function abrirSidebar() {
+            sidebar.classList.remove('fechada');
+            toggleBtn.style.display = 'flex';
+            reopenBtn.classList.remove('visible');
+            
+            
+            localStorage.setItem('sidebarFechada', 'false');
+        }
+
+       
+        toggleBtn.addEventListener('click', fecharSidebar);
+        reopenBtn.addEventListener('click', abrirSidebar);
+
+      
+        const sidebarFechada = localStorage.getItem('sidebarFechada');
+        if (sidebarFechada === 'true') {
+            fecharSidebar();
+        } else {
+            abrirSidebar();
+        }
+
+        // logo coisas
+        const logo = document.getElementById('logo');
+        logo.addEventListener('click', function() {
+            window.location.href = 'index.html';
+        });
+
+        
+        function atualizarNoticia() {
+            const noticia = noticias[indiceAtual];
+            const imagemElement = document.getElementById('noticiaImagem');
+            const descricaoElement = document.getElementById('noticiaDescricao');
+            
+            
+            imagemElement.style.opacity = '0';
+            descricaoElement.style.opacity = '0';
+            
+            setTimeout(() => {
+                imagemElement.src = noticia.imagem;
+                descricaoElement.innerHTML = noticia.descricao;
+                
+              
+                imagemElement.style.opacity = '1';
+                descricaoElement.style.opacity = '1';
+            }, 300);
+            
+            atualizarIndicadores();
+            tempoRestante = 5;
+            if (timerElement) timerElement.textContent = tempoRestante;
+        }
+        
+        function atualizarIndicadores() {
+            const indicadoresDiv = document.getElementById('indicadores');
+            indicadoresDiv.innerHTML = '';
+            
+            noticias.forEach((_, index) => {
+                const indicador = document.createElement('div');
+                indicador.className = 'indicador';
+                if (index === indiceAtual) indicador.classList.add('ativo');
+                indicador.onclick = () => irParaNoticia(index);
+                indicadoresDiv.appendChild(indicador);
+            });
+        }
+        
+        function irParaNoticia(index) {
+            indiceAtual = index;
+            atualizarNoticia();
+            resetarTimer();
+        }
+        
+        function proximaNoticia() {
+            indiceAtual = (indiceAtual + 1) % noticias.length;
+            atualizarNoticia();
+            resetarTimer();
+        }
+        
+        function noticiaAnterior() {
+            indiceAtual = (indiceAtual - 1 + noticias.length) % noticias.length;
+            atualizarNoticia();
+            resetarTimer();
+        }
+        
+        function resetarTimer() {
+            clearInterval(intervalo);
+            tempoRestante = 5;
+            if (timerElement) timerElement.textContent = tempoRestante;
+            iniciarTimer();
+        }
+        
+        function iniciarTimer() {
+            intervalo = setInterval(() => {
+                tempoRestante--;
+                if (timerElement) timerElement.textContent = tempoRestante;
+                
+                if (tempoRestante <= 0) {
+                    proximaNoticia();
+                }
+            }, 1000);
+        }
         
        
-    ];
-    
+       document.getElementById('noticiaImagem').addEventListener('click', function() {
+    const noticia = noticias[indiceAtual];
+    if (!noticia.noticiaId) return;
+    sessionStorage.setItem('abrirNoticiaId', noticia.noticiaId);
+    window.location.href = 'ennio-noticias.html';
+});
 
-    
-    let indiceAtual = 0;
-    let intervalo;
-    let tempoRestante = 25;
-    let timerElement = document.getElementById('timer');
-    
-    function atualizarNoticia() {
-        const noticia = noticias[indiceAtual];
-        const imagemElement = document.getElementById('noticiaImagem');
-        const descricaoElement = document.getElementById('noticiaDescricao');
+document.getElementById('noticiaDescricao').addEventListener('click', function() {
+    const noticia = noticias[indiceAtual];
+    if (!noticia.noticiaId) return;
+    sessionStorage.setItem('abrirNoticiaId', noticia.noticiaId);
+    window.location.href = 'ennio-noticias.html';
+});
         
-        // Aplicar fade out
-        imagemElement.style.opacity = '0';
-        descricaoElement.style.opacity = '0';
-        
-        setTimeout(() => {
-            imagemElement.src = noticia.imagem;
-            descricaoElement.innerHTML = noticia.descricao;
-            
-            // Aplicar fade in
-            imagemElement.style.opacity = '1';
-            descricaoElement.style.opacity = '1';
-        }, 300);
-        
-        // Atualizar indicadores
+       
         atualizarIndicadores();
-        
-        // Resetar timer
-        tempoRestante = 5;
-        if (timerElement) timerElement.textContent = tempoRestante;
-    }
-    
-    function atualizarIndicadores() {
-        const indicadoresDiv = document.getElementById('indicadores');
-        indicadoresDiv.innerHTML = '';
-        
-        noticias.forEach((_, index) => {
-            const indicador = document.createElement('div');
-            indicador.className = 'indicador';
-            if (index === indiceAtual) indicador.classList.add('ativo');
-            indicador.onclick = () => irParaNoticia(index);
-            indicadoresDiv.appendChild(indicador);
-        });
-    }
-    
-    function irParaNoticia(index) {
-        indiceAtual = index;
         atualizarNoticia();
-        resetarTimer();
-    }
-    
-    function proximaNoticia() {
-        indiceAtual = (indiceAtual + 1) % noticias.length;
-        atualizarNoticia();
-        resetarTimer();
-    }
-    
-    function noticiaAnterior() {
-        indiceAtual = (indiceAtual - 1 + noticias.length) % noticias.length;
-        atualizarNoticia();
-        resetarTimer();
-    }
-    
-    function resetarTimer() {
-        clearInterval(intervalo);
-        tempoRestante = 5;
-        if (timerElement) timerElement.textContent = tempoRestante;
         iniciarTimer();
-    }
-    
-    function iniciarTimer() {
-        intervalo = setInterval(() => {
-            tempoRestante--;
-            if (timerElement) timerElement.textContent = tempoRestante;
+
+      
+        window.addEventListener('scroll', function() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const toggleBtn = document.querySelector('.sidebar-toggle');
+            const reopenBtn = document.querySelector('.reopen-sidebar');
             
-            if (tempoRestante <= 0) {
-                proximaNoticia();
+            if (toggleBtn) {
+                toggleBtn.style.top = Math.max(170 - scrollTop, 20) + 'px';
             }
-        }, 1000);
-    }
-    
-    // Evento de click
-    document.addEventListener('click', function(e) {
-        const imagem = document.getElementById('noticiaImagem');
-        const descricao = document.getElementById('noticiaDescricao');
-        
-        if (e.target === imagem || e.target === descricao || imagem.contains(e.target) || descricao.contains(e.target)) {
-            const link = noticias[indiceAtual].link;
-            if (link) {
-                window.open(link, '_blank');
+            if (reopenBtn) {
+                reopenBtn.style.top = Math.max(170 - scrollTop, 20) + 'px';
             }
-        }
-    });
-    
-    // Adicionar estilos de transição
-    const estilo = document.createElement('style');
-    estilo.textContent = `
-        #noticiaImagem, #noticiaDescricao {
-            transition: opacity 0.3s ease;
-            opacity: 1;
-        }
-        .carrossel-imagem, .carrossel-descricao {
-            cursor: pointer;
-        }
-    `;
-    document.head.appendChild(estilo);
-    
-    // Iniciar o carrossel
-    atualizarIndicadores();
-    atualizarNoticia();
-    iniciarTimer();
-</script>
+        });
+    </script>
+</body>
+</html>
