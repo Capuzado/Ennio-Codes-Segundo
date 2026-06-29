@@ -473,185 +473,144 @@
         <p>&copy; 2024 PEI Ennio Chiesa - Todos os direitos reservados</p>
     </footer>
 
-    <script>
-        // NOTÍCIAS
-       const noticias = [
-    {
-        imagem: "image/reportagem1.jpg",
-        descricao: "Festa Junina chegando no Ennio Chiesa! Se preparem para muita diversão das 07 as 16.",
-        noticiaId: 2   // ← ID da notícia na página ennio-noticias.html
-    },
-    {
-        imagem: "image/galinhateste.jpg",
-        descricao: "Broo",
-        noticiaId: null
-    },
-    {
-        imagem: "image/ratoteste.jpg",
-        descricao: "Omaigaaaaaaaa",
-        noticiaId: null
-    },
-    {
-        imagem: "image/ornintorrincoteste.jpg",
-        descricao: "niggers",
-        noticiaId: null
-    }
-];
-
-        let indiceAtual = 0;
-        let intervalo;
-        let tempoRestante = 5;
-        let timerElement = document.getElementById('timer');
-
-        // sidebar coisas
-        const sidebar = document.getElementById('sidebar');
-        const toggleBtn = document.getElementById('sidebarToggle');
-        const reopenBtn = document.getElementById('reopenSidebar');
-
-        // fechar sidebar
-        function fecharSidebar() {
-            sidebar.classList.add('fechada');
-            toggleBtn.style.display = 'none';
-            reopenBtn.classList.add('visible');
-            
-           
-            localStorage.setItem('sidebarFechada', 'true');
-        }
-
-        // Abrir Sidebar
-        function abrirSidebar() {
-            sidebar.classList.remove('fechada');
-            toggleBtn.style.display = 'flex';
-            reopenBtn.classList.remove('visible');
-            
-            
-            localStorage.setItem('sidebarFechada', 'false');
-        }
-
-       
-        toggleBtn.addEventListener('click', fecharSidebar);
-        reopenBtn.addEventListener('click', abrirSidebar);
-
-      
-        const sidebarFechada = localStorage.getItem('sidebarFechada');
-        if (sidebarFechada === 'true') {
-            fecharSidebar();
-        } else {
-            abrirSidebar();
-        }
-
-        // logo coisas
-        const logo = document.getElementById('logo');
-        logo.addEventListener('click', function() {
-            window.location.href = 'index.html';
-        });
-
-        
-        function atualizarNoticia() {
-            const noticia = noticias[indiceAtual];
-            const imagemElement = document.getElementById('noticiaImagem');
-            const descricaoElement = document.getElementById('noticiaDescricao');
-            
-            
-            imagemElement.style.opacity = '0';
-            descricaoElement.style.opacity = '0';
-            
-            setTimeout(() => {
-                imagemElement.src = noticia.imagem;
-                descricaoElement.innerHTML = noticia.descricao;
-                
-              
-                imagemElement.style.opacity = '1';
-                descricaoElement.style.opacity = '1';
-            }, 300);
-            
-            atualizarIndicadores();
-            tempoRestante = 5;
-            if (timerElement) timerElement.textContent = tempoRestante;
-        }
-        
-        function atualizarIndicadores() {
-            const indicadoresDiv = document.getElementById('indicadores');
-            indicadoresDiv.innerHTML = '';
-            
-            noticias.forEach((_, index) => {
-                const indicador = document.createElement('div');
-                indicador.className = 'indicador';
-                if (index === indiceAtual) indicador.classList.add('ativo');
-                indicador.onclick = () => irParaNoticia(index);
-                indicadoresDiv.appendChild(indicador);
-            });
-        }
-        
-        function irParaNoticia(index) {
-            indiceAtual = index;
-            atualizarNoticia();
-            resetarTimer();
-        }
-        
-        function proximaNoticia() {
-            indiceAtual = (indiceAtual + 1) % noticias.length;
-            atualizarNoticia();
-            resetarTimer();
-        }
-        
-        function noticiaAnterior() {
-            indiceAtual = (indiceAtual - 1 + noticias.length) % noticias.length;
-            atualizarNoticia();
-            resetarTimer();
-        }
-        
-        function resetarTimer() {
-            clearInterval(intervalo);
-            tempoRestante = 5;
-            if (timerElement) timerElement.textContent = tempoRestante;
-            iniciarTimer();
-        }
-        
-        function iniciarTimer() {
-            intervalo = setInterval(() => {
-                tempoRestante--;
-                if (timerElement) timerElement.textContent = tempoRestante;
-                
-                if (tempoRestante <= 0) {
-                    proximaNoticia();
-                }
-            }, 1000);
-        }
+<script>
+   
+    
+    const noticias = [
+        {
+            imagem: "image/focateste.jpg",
+            descricao: "meu deus.",
+            link: "https://www.exemplo.com/noticia1"
+        },
+        {
+            imagem: "image/galinhateste.jpg",
+            descricao: "broo",
+            link: "https://www.exemplo.com/noticia2"
+        },
+        {
+            imagem: "image/ratoteste.jpg",
+            descricao: "omaigaaaaaaaa",
+            link: "https://www.exemplo.com/noticia3"
+        },
+         {
+            imagem: "image/ornintorrincoteste.jpg",
+            descricao: "aoba",
+            link: "https://www.exemplo.com/noticia4"
+        },
         
        
-       document.getElementById('noticiaImagem').addEventListener('click', function() {
-    const noticia = noticias[indiceAtual];
-    if (!noticia.noticiaId) return;
-    sessionStorage.setItem('abrirNoticiaId', noticia.noticiaId);
-    window.location.href = 'ennio-noticias.html';
-});
+    ];
+    
 
-document.getElementById('noticiaDescricao').addEventListener('click', function() {
-    const noticia = noticias[indiceAtual];
-    if (!noticia.noticiaId) return;
-    sessionStorage.setItem('abrirNoticiaId', noticia.noticiaId);
-    window.location.href = 'ennio-noticias.html';
-});
+    
+    let indiceAtual = 0;
+    let intervalo;
+    let tempoRestante = 25;
+    let timerElement = document.getElementById('timer');
+    
+    function atualizarNoticia() {
+        const noticia = noticias[indiceAtual];
+        const imagemElement = document.getElementById('noticiaImagem');
+        const descricaoElement = document.getElementById('noticiaDescricao');
         
-       
+        // Aplicar fade out
+        imagemElement.style.opacity = '0';
+        descricaoElement.style.opacity = '0';
+        
+        setTimeout(() => {
+            imagemElement.src = noticia.imagem;
+            descricaoElement.innerHTML = noticia.descricao;
+            
+            // Aplicar fade in
+            imagemElement.style.opacity = '1';
+            descricaoElement.style.opacity = '1';
+        }, 300);
+        
+        // Atualizar indicadores
         atualizarIndicadores();
-        atualizarNoticia();
-        iniciarTimer();
-
-      
-        window.addEventListener('scroll', function() {
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            const toggleBtn = document.querySelector('.sidebar-toggle');
-            const reopenBtn = document.querySelector('.reopen-sidebar');
-            
-            if (toggleBtn) {
-                toggleBtn.style.top = Math.max(170 - scrollTop, 20) + 'px';
-            }
-            if (reopenBtn) {
-                reopenBtn.style.top = Math.max(170 - scrollTop, 20) + 'px';
-            }
+        
+        // Resetar timer
+        tempoRestante = 5;
+        if (timerElement) timerElement.textContent = tempoRestante;
+    }
+    
+    function atualizarIndicadores() {
+        const indicadoresDiv = document.getElementById('indicadores');
+        indicadoresDiv.innerHTML = '';
+        
+        noticias.forEach((_, index) => {
+            const indicador = document.createElement('div');
+            indicador.className = 'indicador';
+            if (index === indiceAtual) indicador.classList.add('ativo');
+            indicador.onclick = () => irParaNoticia(index);
+            indicadoresDiv.appendChild(indicador);
         });
-    </script>
-</body>
-</html>
+    }
+    
+    function irParaNoticia(index) {
+        indiceAtual = index;
+        atualizarNoticia();
+        resetarTimer();
+    }
+    
+    function proximaNoticia() {
+        indiceAtual = (indiceAtual + 1) % noticias.length;
+        atualizarNoticia();
+        resetarTimer();
+    }
+    
+    function noticiaAnterior() {
+        indiceAtual = (indiceAtual - 1 + noticias.length) % noticias.length;
+        atualizarNoticia();
+        resetarTimer();
+    }
+    
+    function resetarTimer() {
+        clearInterval(intervalo);
+        tempoRestante = 5;
+        if (timerElement) timerElement.textContent = tempoRestante;
+        iniciarTimer();
+    }
+    
+    function iniciarTimer() {
+        intervalo = setInterval(() => {
+            tempoRestante--;
+            if (timerElement) timerElement.textContent = tempoRestante;
+            
+            if (tempoRestante <= 0) {
+                proximaNoticia();
+            }
+        }, 1000);
+    }
+    
+    // Evento de click
+    document.addEventListener('click', function(e) {
+        const imagem = document.getElementById('noticiaImagem');
+        const descricao = document.getElementById('noticiaDescricao');
+        
+        if (e.target === imagem || e.target === descricao || imagem.contains(e.target) || descricao.contains(e.target)) {
+            const link = noticias[indiceAtual].link;
+            if (link) {
+                window.open(link, '_blank');
+            }
+        }
+    });
+    
+    // Adicionar estilos de transição
+    const estilo = document.createElement('style');
+    estilo.textContent = `
+        #noticiaImagem, #noticiaDescricao {
+            transition: opacity 0.3s ease;
+            opacity: 1;
+        }
+        .carrossel-imagem, .carrossel-descricao {
+            cursor: pointer;
+        }
+    `;
+    document.head.appendChild(estilo);
+    
+    // Iniciar o carrossel
+    atualizarIndicadores();
+    atualizarNoticia();
+    iniciarTimer();
+</script>

@@ -16,99 +16,23 @@
             overflow-x: hidden;
         }
 
+        
         header {
-            position: relative;
-            background: url(image/escolafrontal.jpg) center/cover;
+            background-color: #2c3e50;
             color: white;
-            padding: 1rem;
-            display: flex;
-            gap: 3rem;
-            align-items: center;
+            text-align: center;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
         }
 
-        header::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg,
-                rgb(56, 0, 0) 0%,
-                rgba(51, 0, 0, 0.8) 30%,
-                rgba(133, 19, 19, 0.466) 70%);
-            pointer-events: none;
+        header h1 {
+            font-size: 2rem;
         }
 
-        header > * { position: relative; z-index: 1; }
-
-        .logo {
-            width: 130px; height: 130px;
-            object-fit: contain;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-        .logo:hover { transform: scale(1.05); }
-        .Title { font-size: 28px; }
-
-        .sidebar-toggle {
-            position: fixed;
-            left: 20px; top: 170px;
-            z-index: 1000;
-            background: #2a5298;
-            color: white;
-            border: none;
-            width: 45px; height: 45px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 24px;
-            display: flex;
-            align-items: center; justify-content: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-        .sidebar-toggle:hover { background: #1e3c72; transform: scale(1.1); }
-
-        .reopen-sidebar {
-            position: fixed;
-            left: 20px; top: 170px;
-            z-index: 1000;
-            background: #2a5298;
-            color: white;
-            border: none;
-            width: 45px; height: 45px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 24px;
-            display: none;
-            align-items: center; justify-content: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-        .reopen-sidebar:hover { background: #1e3c72; transform: scale(1.1); }
-        .reopen-sidebar.visible { display: flex; }
-
-        .main-layout {
-            display: flex;
-            max-width: 1400px;
+        main {
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
-            gap: 30px;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        .sidebar-esquerda {
-            width: 280px;
-            flex-shrink: 0;
-            position: sticky;
-            top: 20px;
-            align-self: flex-start;
-            height: fit-content;
-            background: white;
-            border-radius: 10px;
-            padding: 20px 15px 20px 15px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            margin-left: -10px;
+            padding: 0 1rem;
         }
 
         .sidebar-esquerda.fechada {
@@ -184,7 +108,9 @@
             transition: transform 0.2s ease;
         }
 
-        .card:hover { transform: translateY(-5px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
+        .card:hover {
+            transform: translateY(-5px);
+        }
 
         .card img {
             width: 120px; height: 120px;
@@ -194,9 +120,21 @@
             border: 3px solid #2a5298;
         }
 
-        .card h3 { font-size: 1.2rem; margin-bottom: 0.5rem; color: #2c3e50; }
-        .card .cargo { font-weight: bold; color: #e67e22; margin-bottom: 0.5rem; }
-        .card p { color: #666; font-size: 0.9rem; margin-top: 0.5rem; }
+        .card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+        }
+
+        .card .cargo {
+            font-weight: bold;
+            color: #f14805;
+            margin-bottom: 0.5rem;
+        }
+
+        .card p {
+            color: #666;
+        }
 
         footer {
             background: #1e3a5f;
@@ -206,244 +144,98 @@
             margin-top: 20px;
         }
 
-        @media (max-width: 768px) {
-            .main-layout { flex-direction: column; padding: 15px; }
-            .sidebar-esquerda { position: static; width: 100%; margin-left: 0; }
-            .sidebar-esquerda.fechada { transform: translateX(-100%); position: absolute; }
-            .sidebar-toggle, .reopen-sidebar { top: 120px; left: 15px; width: 40px; height: 40px; font-size: 20px; }
-            main { padding: 1rem; }
-            .Title { font-size: 20px; }
-            .logo { width: 80px; height: 80px; }
+        footer a {
+            color: #ecf0f1;
+            text-decoration: none;
+            font-weight: bold;
         }
 
-        @media (max-width: 480px) { .grid { grid-template-columns: 1fr; } }
+        footer a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
 
-    <header>
-        <img src="image/LogoEnnio2.png" alt="Logo da Escola Ennio Chiesa" class="logo" id="logo">
-        <h1 class="Title">PEI ENNIO CHIESA</h1>
-    </header>
+<header>
+    <h1>👨‍🏫 Equipe da Escola</h1>
+</header>
 
-    <button class="sidebar-toggle" id="sidebarToggle" title="Fechar Menu">✖</button>
-    <button class="reopen-sidebar" id="reopenSidebar" title="Abrir Menu">☰</button>
-
-    <div class="main-layout">
-
-        <aside class="sidebar-esquerda" id="sidebar">
-            <h3>Menu de Navegação</h3>
-            <nav>
-                <a href="Equipe.html">Nossa Equipe</a>
-                <a href="galeria.html">Galeria escolar</a>
-                <a href="historia.html">História da escola</a>
-                <a href="interclasse.html">Interclasse e esportes</a>
-                <a href="links.html">Links e redes sociais</a>
-                <a href="documentos.html">Documentos Pedagógicos</a>
-                <a href="ennio-noticias.html">Ennio Notícias</a>
-            </nav>
-        </aside>
-
-        <div class="conteudo-principal">
-            <main>
-                <section>
-                    <h2>Direção</h2>
-                    <div class="grid">
-                        <div class="card">
-                            <img src="image/furãoteste.jpg" alt="Foto da Diretora Sheila">
-                            <h3>Sheila</h3>
-                            <div class="cargo">Diretora</div>
-                            <p>Liderando o Ennio</p>
-                        </div>
-                        <div class="card">
-                            <img src="image/Marinete.jpg" alt="Foto da Vice-diretora Marinete">
-                            <h3>Marinete</h3>
-                            <div class="cargo">Vice-diretora</div>
-                            <p>Apoiando a gestão escolar</p>
-                        </div>
-                    </div>
-                </section>
-
-                <section>
-                    <h2>Coordenação</h2>
-                    <div class="grid">
-                        <div class="card">
-                            <img src="image/MariaJosenita.png" alt="Foto da Coordenadora Maria Josenita">
-                            <h3>Maria Josenita</h3>
-                            <div class="cargo">Coordenadora/Professora de História</div>
-                            <p>--- "Gentileza gera gentileza" ---
-                                Licenciatura em História/pedagogia/bacharel em Direito/
-                                pós em especialização de Ensino Médio pela UNICAMP,
-                                Concursada e aposentada da Prefeitura de SP;
-                                Concursada e em atuação pela secretaria do Estado de SP</p>
-                        </div>
-                        <div class="card">
-                            <img src="image/furãoteste.jpg" alt="Foto do Coordenador Bell">
-                            <h3>Bell</h3>
-                            <div class="cargo">Coordenador/Professora de Português</div>
-                            <p>Português e coordenação</p>
-                        </div>
-                        <div class="card">
-                            <img src="image/furãoteste.jpg" alt="Foto da Coordenadora Dani">
-                            <h3>Dani</h3>
-                            <div class="cargo">Coordenadora Geral</div>
-                            <p>Coordenação geral</p>
-                        </div>
-                        <div class="card">
-                            <img src="image/furãoteste.jpg" alt="Foto do Coordenador Marcio Langer">
-                            <h3>Marcio Langer</h3>
-                            <div class="cargo">Coordenador/Professora de Química</div>
-                            <p>Química e coordenação</p>
-                        </div>
-                    </div>
-                </section>
-
-                <section>
-                    <h2>Professores</h2>
-                    <div class="grid">
-                        <div class="card">
-                            <img src="image/Adriana.png" alt="Foto da Professora Adriana">
-                            <h3>Adriana</h3>
-                            <div class="cargo">Professora</div>
-                            <p>Educação</p>
-                        </div>
-                        <div class="card">
-                            <img src="image/AnaCarolina.jpg" alt="Foto da Professora Ana Carolina">
-                            <h3>Ana Carolina</h3>
-                            <div class="cargo">Professora</div>
-                            <p>Educação</p>
-                        </div>
-                        <div class="card">
-                            <img src="image/furãoteste.jpg" alt="Foto do Professor Alexandre">
-                            <h3>Alexandre</h3>
-                            <div class="cargo">Professor</div>
-                            <p>Educação</p>
-                        </div>
-                        <div class="card">
-                            <img src="image/furãoteste.jpg" alt="Foto da Professora Barbara">
-                            <h3>Barbara</h3>
-                            <div class="cargo">Professora</div>
-                            <p>Educação</p>
-                        </div>
-                        <div class="card">
-                            <img src="image/Camila.jpeg" alt="Foto da Professora Camila">
-                            <h3>Camila</h3>
-                            <div class="cargo">Professora</div>
-                            <p>"Acredito que ensinar física é ensinar o aluno a questionar, e questionar é o que nos torna seres pensantes"</p>
-                        </div>
-                        <div class="card">
-                            <img src="image/furãoteste.jpg" alt="Foto da Professora Lurdes">
-                            <h3>Lurdes</h3>
-                            <div class="cargo">Professora</div>
-                            <p>Educação</p>
-                        </div>
-                        <div class="card">
-                            <img src="image/furãoteste.jpg" alt="Foto da Professora Kelly">
-                            <h3>Kelly</h3>
-                            <div class="cargo">Professora</div>
-                            <p>Educação</p>
-                        </div>
-                        <div class="card">
-                            <img src="image/furãoteste.jpg" alt="Foto do Professor Marcio Oliveira">
-                            <h3>Marcio Oliveira</h3>
-                            <div class="cargo">Professor</div>
-                            <p>Educação</p>
-                        </div>
-                        <div class="card">
-                            <img src="image/furãoteste.jpg" alt="Foto da Professora Mayana">
-                            <h3>Mayana</h3>
-                            <div class="cargo">Professora</div>
-                            <p>Educação</p>
-                        </div>
-                        <div class="card">
-                            <img src="image/furãoteste.jpg" alt="Foto do Professor Natanael">
-                            <h3>Natanael</h3>
-                            <div class="cargo">Professor</div>
-                            <p>Educação</p>
-                        </div>
-                        <div class="card">
-                            <img src="image/furãoteste.jpg" alt="Foto da Professora Paula">
-                            <h3>Paula</h3>
-                            <div class="cargo">Professora</div>
-                            <p>Educação</p>
-                        </div>
-                        <div class="card">
-                            <img src="image/furãoteste.jpg" alt="Foto do Professor Roque">
-                            <h3>Roque</h3>
-                            <div class="cargo">Professor</div>
-                            <p>Educação</p>
-                        </div>
-                        <div class="card">
-                            <img src="image/furãoteste.jpg" alt="Foto do Professor Ricardo">
-                            <h3>Ricardo</h3>
-                            <div class="cargo">Professor</div>
-                            <p>Educação</p>
-                        </div>
-                        <div class="card">
-                            <img src="image/furãoteste.jpg" alt="Foto da Professora Renata">
-                            <h3>Renata</h3>
-                            <div class="cargo">Professora</div>
-                            <p>Educação</p>
-                        </div>
-                        <div class="card">
-                            <img src="image/furãoteste.jpg" alt="Foto da Professora Valéria">
-                            <h3>Valéria</h3>
-                            <div class="cargo">Professora</div>
-                            <p>Educação</p>
-                        </div>
-                        <div class="card">
-                            <img src="image/furãoteste.jpg" alt="Foto do Professor Zucco">
-                            <h3>Zucco</h3>
-                            <div class="cargo">Professor</div>
-                            <p>Educação</p>
-                        </div>
-                    </div>
-                </section>
-            </main>
+<main>
+    <!-- DIREÇÃO -->
+    <section>
+        <h2>Direção</h2>
+        <div class="grid">
+            <div class="card">
+                <img src="image/furãoteste.jpg" alt="Foto da Diretora Sheila">
+                <h3>Sheila</h3>
+                <div class="cargo">Diretora</div>
+            </div>
+            <div class="card">
+                <img src="image/furãoteste.jpg" alt="Foto da Vice-diretora Marinete">
+                <h3>Marinete</h3>
+                <div class="cargo">Vice-diretora</div>
+            </div>
         </div>
-    </div>
+    </section>
+
+    <!-- COORDENAÇÃO -->
+    <section>
+        <h2>Coordenação</h2>
+        <div class="grid">
+            <div class="card">
+                <img src="image/furãoteste.jpg" alt="Foto da Coordenadora Maria Josenita">
+                <h3>Maria Josenita</h3>
+                <div class="cargo">Coordenadora/Professora de História</div>
+            </div>
+            <div class="card">
+                <img src="image/furãoteste.jpg" alt="Foto do Coordenador Bell">
+                <h3>Bell</h3>
+                <div class="cargo">Coordenador/Professora de Português</div>
+            </div>
+            <div class="card">
+                <img src="image/furãoteste.jpg" alt="Foto da Coordenadora Dani">
+                <h3>Dani</h3>
+                <div class="cargo">Coordenadora Geral</div>
+            </div>
+            <div class="card">
+                <img src="image/furãoteste.jpg" alt="Foto do Coordenador Marcio Langer">
+                <h3>Marcio Langer</h3>
+                <div class="cargo">Coordenador/Professora de Química</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROFESSORES -->
+    <section>
+        <h2>Professores</h2>
+        <div class="grid">
+            <!-- PROFESSORES -->
+            <div class="card"><img src="image/furãoteste.jpg" alt="Foto da Professora Adriana"><h3>Adriana</h3><div class="cargo">Professora</div></div>
+            <div class="card"><img src="image/furãoteste.jpg" alt="Foto da Professora Ana Carolina"><h3>Ana Carolina</h3><div class="cargo">Professora</div></div>
+            <div class="card"><img src="image/furãoteste.jpg" alt="Foto do Professor Alexandre"><h3>Alexandre</h3><div class="cargo">Professor</div></div>
+            <div class="card"><img src="image/furãoteste.jpg" alt="Foto da Professora Barbara"><h3>Barbara</h3><div class="cargo">Professora</div></div>
+            <div class="card"><img src="image/Camila.jpeg" alt="Foto da Professora Camila"><h3>Camila</h3><div class="cargo">Professora</div>
+                Acredito que ensinar física é ensinar o aluno a questionar, e questionar é o que nos torna seres pensantes
+            </div>
+            <div class="card"><img src="image/furãoteste.jpg" alt="Foto da Professora Lurdes"><h3>Lurdes</h3><div class="cargo">Professora</div></div>
+            <div class="card"><img src="image/furãoteste.jpg" alt="Foto da Professora Kelly"><h3>Kelly</h3><div class="cargo">Professora</div></div>
+            <div class="card"><img src="image/furãoteste.jpg" alt="Foto do Professor Marcio Oliveira"><h3>Marcio Oliveira</h3><div class="cargo">Professor</div></div>
+            <div class="card"><img src="image/furãoteste.jpg" alt="Foto da Professora Mayana"><h3>Mayana</h3><div class="cargo">Professora</div></div>
+            <div class="card"><img src="image/furãoteste.jpg" alt="Foto do Professor Natanael"><h3>Natanael</h3><div class="cargo">Professor</div></div>
+            <div class="card"><img src="image/furãoteste.jpg" alt="Foto da Professora Paula"><h3>Paula</h3><div class="cargo">Professora</div></div>
+            <div class="card"><img src="image/furãoteste.jpg" alt="Foto do Professor Roque"><h3>Roque</h3><div class="cargo">Professor</div></div>
+            <div class="card"><img src="image/furãoteste.jpg" alt="Foto do Professor Ricardo"><h3>Ricardo</h3><div class="cargo">Professor</div></div>
+            <div class="card"><img src="image/furãoteste.jpg" alt="Foto da Professora Renata"><h3>Renata</h3><div class="cargo">Professora</div></div>
+            <div class="card"><img src="image/furãoteste.jpg" alt="Foto da Professora Valéria"><h3>Valéria</h3><div class="cargo">Professora</div></div>
+            <div class="card"><img src="image/furãoteste.jpg" alt="Foto do Professor Zucco"><h3>Zucco</h3><div class="cargo">Professor</div></div>
+        </div>
+    </section>
+</main>
 
     <footer>
         <p>&copy; 2024 PEI Ennio Chiesa - Todos os direitos reservados</p>
     </footer>
 
-    <script>
-        const sidebar   = document.getElementById('sidebar');
-        const toggleBtn = document.getElementById('sidebarToggle');
-        const reopenBtn = document.getElementById('reopenSidebar');
-
-        function fecharSidebar() {
-            sidebar.classList.add('fechada');
-            toggleBtn.style.display = 'none';
-            reopenBtn.classList.add('visible');
-            localStorage.setItem('sidebarFechada', 'true');
-        }
-
-        function abrirSidebar() {
-            sidebar.classList.remove('fechada');
-            toggleBtn.style.display = 'flex';
-            reopenBtn.classList.remove('visible');
-            localStorage.setItem('sidebarFechada', 'false');
-        }
-
-        toggleBtn.addEventListener('click', fecharSidebar);
-        reopenBtn.addEventListener('click', abrirSidebar);
-
-        if (localStorage.getItem('sidebarFechada') === 'true') {
-            fecharSidebar();
-        } else {
-            abrirSidebar();
-        }
-
-        document.getElementById('logo').addEventListener('click', function() {
-            window.location.href = 'index.html';
-        });
-
-        window.addEventListener('scroll', function() {
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            toggleBtn.style.top = Math.max(170 - scrollTop, 20) + 'px';
-            reopenBtn.style.top = Math.max(170 - scrollTop, 20) + 'px';
-        });
-    </script>
 </body>
 </html>
